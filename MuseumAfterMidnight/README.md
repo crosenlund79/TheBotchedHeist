@@ -1,6 +1,6 @@
 # Museum After Midnight
 
-A first visual and technical prototype: an explorable night-time museum built from Synty assets in **Godot 4.6** (Forward+). It has no enemies, objectives or progression. The Heist experiment in `../TheHeist` is untouched.
+A lightweight **haunted-museum shooter** built from Synty assets in **Godot 4.6** (Forward+). Explore the museum after dark, shoot the Horror Mansion monsters roaming the galleries, clear the museum and survive the next, slightly harder round. The Heist experiment in `../TheHeist` is untouched.
 
 ## Run it
 
@@ -12,7 +12,8 @@ Open `MuseumAfterMidnight/project.godot` in Godot 4.6 or newer and press **Run**
 |---|---|
 | W A S D | Move |
 | Shift | Run |
-| Mouse | Look (third-person camera; click to recapture the mouse) |
+| Mouse | Look and aim (crosshair at screen centre; click to recapture the mouse) |
+| Left mouse button | Shoot (hold for automatic fire) |
 | Esc | Menu: resume, graphics preset, quit |
 
 ## What's in it
@@ -34,6 +35,39 @@ Open `MuseumAfterMidnight/project.godot` in Godot 4.6 or newer and press **Run**
 - **Animated figures:** all costumed figures play the idle clip from the Heist Mixamo pipeline. The Synty rig is shared across packs, so no new retargeting was needed.
 - **Player:** a Synty Heist character (`SM_Chr_Female_Overall_01`) with the baked Mixamo idle, walk and run clips. Movement speed matches the clips' measured root speed, so the feet don't slide.
 
+## Haunted museum
+
+- **The Crypt:** a new 20 × 10 m room behind the Samurai and Horror galleries, through doors marked "THE CRYPT".
+  - Coffins under a flickering chandelier, a swaying skeleton in a cage, specimen jars, a bird cage and an exorcist cross.
+  - Candle stands with flames, hanging chains, skulls, barrels and crates, and spider webs in the corners.
+  - Built from Horror Mansion and Generic assets.
+- **Atmosphere:**
+  - flickering lamps, candles and the chandelier, with irregular dips and drop-outs;
+  - cold green ambient light and denser fog (volumetric on High);
+  - spider webs in the hall and the Horror gallery.
+
+## Monsters and combat
+
+- **Monsters:** Horror Mansion characters: Werewolf, Demon (with tail), Ghoul, Witch, Butcher, Yokai, Gimp and the Count.
+  - Each has its own health, speed, damage and glowing eyes.
+  - They animate with the baked Mixamo clips from the Heist pipeline: idle, walk/sneak to wander, run to chase, a lunging strike, and kneel-and-sink on death.
+- **AI:**
+  - idle and wander near their spawn point;
+  - notice you by line of sight or when you fire nearby;
+  - chase you through doorways along a navigation mesh baked at startup from the museum's collision;
+  - attack in melee.
+- **Gun:** the Heist pistol in the player's right hand.
+  - Shots go through the crosshair; the arms raise into an aim pose (an upper-body overlay of the "Firing Rifle" clip) while firing.
+  - Effects: muzzle flash and light, tracer, impact sparks, blood-red hits on monsters, a hit marker (red for headshots, which do double damage) and a procedural gunshot sound.
+- **Health:** 100. Monster hits flash the screen red.
+  - At zero: "YOU DIED", a kneeling death, then respawn at the entrance with full health and 2.5 s of invulnerability.
+- **Rounds:**
+  - the HUD shows the round and remaining monsters;
+  - when all are dead, "MUSEUM CLEARED!" appears and the next round starts after 5 s;
+  - each round adds one monster (6 → 10) and raises monster health and damage by 10 % and speed by 4 %, capped at round 6.
+
+Sounds are synthesised in code (gunshot, hits, growls, deaths), because the Synty packs contain no audio.
+
 ## Security cameras
 
 There are two ceiling cameras (Synty Heist CCTV prop with a blinking red light), in the **Wild West** and **Future City** galleries.
@@ -41,7 +75,7 @@ There are two ceiling cameras (Synty Heist CCTV prop with a blinking red light),
 - About a second after you leave, the view cuts to that camera's fixed viewpoint.
 - It replays the last 3–5 seconds with a ghost copy of your character.
 - The overlay shows a blinking `● REC`, a date and time stamp, the camera name and a playback countdown.
-- Gameplay then resumes automatically.
+- Gameplay then resumes automatically. Monsters freeze and the combat HUD hides during a replay.
 
 No video is encoded; the replay re-enacts the recorded transforms.
 
@@ -63,16 +97,16 @@ The preset applies immediately from the Esc menu, defaults to **Low**, and is sa
 - Particle FX: dust motes, sun beam, candle flame.
 - The baked Mixamo animation library from `TheHeist/Assets/Showcase`.
 
-**Converted from `ModelProject/SyntyUnity.zip` (Unity packs):** 78 prefabs, 79 FBX files, 25 materials and 21 textures (32 MB).
+**Converted from `ModelProject/SyntyUnity.zip` (Unity packs):** 104 prefabs, 100 FBX files, 26 materials and 22 textures.
 
 | Pack | Prefabs | Characters |
 |---|---:|---:|
 | Western | 14 | 2 |
 | Samurai | 15 | 3 |
 | Vikings | 13 | 2 |
-| Horror Mansion | 15 | 2 |
+| Horror Mansion | 35 | 8 |
 | Sci-Fi City | 15 | 3 |
-| Generic | 6 | 1 |
+| Generic | 12 | 1 |
 
 `Tools/convert_synty_unity.py` did the conversion; it runs outside Godot against the extracted zip:
 - it parses each Unity prefab, including nested prefabs and inactive objects;
@@ -97,4 +131,5 @@ python3 Tools/convert_synty_unity.py <extracted SyntyUnity.zip>/Synty
 - The Unity FBX files reference Synty's local `.psd` texture paths, so the first import prints texture-not-found messages. They are harmless; the converted materials supply the textures.
 - Figures from the five 49-bone Unity rigs animate with relaxed fingers: their finger bones have no `_L`/`_R` names, so those tracks are skipped.
 - Synty's special shaders (Horror grunge, Sci-Fi triplanar) aren't recreated; the converted materials use the base palette textures.
-- This is a prototype: there are no audio, interactions or collision on wall-hung pieces.
+- This is a prototype: there are no audio files (sounds are procedural), and no collision on wall-hung pieces.
+- Monsters use the female Mixamo clips; their attack is a sped-up section of "Button Pushing", since no attack or hit-reaction clips exist yet.

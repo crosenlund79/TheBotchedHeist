@@ -25,7 +25,7 @@ static func _mat(path: String) -> Material:
 	return _mats[path]
 
 ## Instantiates one converted Unity prefab with its materials. Characters play the baked idle.
-static func build(prefab: String) -> Node3D:
+static func build(prefab: String, autoplay := true) -> Node3D:
 	var e: Dictionary = manifest()[prefab]
 	var root := Node3D.new()
 	root.name = prefab
@@ -64,10 +64,12 @@ static func build(prefab: String) -> Node3D:
 		elif main_skel and sk.size() > 0:
 			# Skinned attachment from its own FBX (Horror Mansion hair, hats, capes):
 			# move its meshes onto the character's skeleton so they animate together.
+			_merge_bones(main_skel, sk[0])
 			for mi in sc.find_children("*", "MeshInstance3D", true, false):
 				if not mi.visible:
 					continue
-				var xf: Transform3D = sc.global_transform.affine_inverse() * mi.global_transform
+				var xf := _rel_xf(mi, sc)
+				mi.owner = null
 				mi.get_parent().remove_child(mi)
 				if mi.skin:
 					main_skel.add_child(mi)
@@ -87,10 +89,35 @@ static func build(prefab: String) -> Node3D:
 			ap = AnimationPlayer.new()
 			scenes[e.fbx].add_child(ap)
 		ap.add_animation_library("m", load(ANIMS))
-		ap.play("m/idle")
-		ap.seek(randf() * 10.0, true)
-		ap.speed_scale = randf_range(0.75, 1.0)
+		if autoplay:
+			ap.play("m/idle")
+			ap.seek(randf() * 10.0, true)
+			ap.speed_scale = randf_range(0.75, 1.0)
 	return root
+
+static func _rel_xf(n: Node3D, root: Node) -> Transform3D:
+	var xf := Transform3D()
+	var cur: Node = n
+	while cur and cur != root:
+		if cur is Node3D:
+			xf = (cur as Node3D).transform * xf
+		cur = cur.get_parent()
+	return xf
+
+## Copies bones the attachment rig has but the body rig lacks (e.g. cape bones).
+static func _merge_bones(dst: Skeleton3D, src: Skeleton3D) -> void:
+	for i in src.get_bone_count():
+		var n := src.get_bone_name(i)
+		if dst.find_bone(n) >= 0:
+			continue
+		var bi := dst.add_bone(n)
+		var sp := src.get_bone_parent(i)
+		if sp >= 0:
+			var dp := dst.find_bone(src.get_bone_name(sp))
+			if dp >= 0:
+				dst.set_bone_parent(bi, dp)
+		dst.set_bone_rest(bi, src.get_bone_rest(i))
+		dst.set_bone_pose(bi, src.get_bone_rest(i))
 
 ## Bounds of the visible meshes, in `node`'s parent space.
 static func bounds(node: Node3D) -> AABB:

@@ -17,6 +17,11 @@ func _ready() -> void:
 	_add_key("move_right", [KEY_D, KEY_RIGHT])
 	_add_key("run", [KEY_SHIFT])
 	_add_key("menu", [KEY_ESCAPE])
+	if not InputMap.has_action("shoot"):
+		InputMap.add_action("shoot")
+		var mb := InputEventMouseButton.new()
+		mb.button_index = MOUSE_BUTTON_LEFT
+		InputMap.action_add_event("shoot", mb)
 	var cfg := ConfigFile.new()
 	if cfg.load(CONFIG_PATH) == OK:
 		preset = str(cfg.get_value("graphics", "preset", "Low"))

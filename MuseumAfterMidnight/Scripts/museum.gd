@@ -15,6 +15,7 @@ var lights: Node3D
 var _tinted := {}
 var _plinth_mat: StandardMaterial3D
 var _brass_mat: StandardMaterial3D
+var _flicker: Array = []   # [light, base_energy, phase]
 
 func _ready() -> void:
 	arch = _group("Architecture"); exhibits = _group("Exhibits"); lights = _group("Lights")
@@ -23,8 +24,9 @@ func _ready() -> void:
 	_brass_mat = StandardMaterial3D.new()
 	_brass_mat.albedo_color = Color(0.78, 0.6, 0.3); _brass_mat.metallic = 0.85; _brass_mat.roughness = 0.3
 	_build_hall()
-	_build_room("Samurai", Rect2(-10, -17.5, 10, 10), Color(0.30, 0.36, 0.30), Color(0.55, 0.42, 0.32), {"S": [1]})
-	_build_room("Horror", Rect2(0, -17.5, 10, 10), Color(0.34, 0.18, 0.20), Color(0.35, 0.22, 0.24), {"S": [0]})
+	_build_room("Samurai", Rect2(-10, -17.5, 10, 10), Color(0.30, 0.36, 0.30), Color(0.55, 0.42, 0.32), {"S": [1], "N": [1]})
+	_build_room("Horror", Rect2(0, -17.5, 10, 10), Color(0.34, 0.18, 0.20), Color(0.35, 0.22, 0.24), {"S": [0], "N": [0]})
+	_build_room("Crypt", Rect2(-10, -27.5, 20, 10), Color(0.20, 0.23, 0.22), Color(0.30, 0.32, 0.30), {"S": [1, 2]})
 	_build_room("Western", Rect2(-20, -7.5, 10, 15), Color(0.62, 0.50, 0.36), Color(0.62, 0.42, 0.28), {"E": [1]})
 	_build_room("SciFi", Rect2(10, -7.5, 10, 15), Color(0.20, 0.24, 0.34), Color(0.30, 0.34, 0.42), {"W": [1]})
 	_hall_exhibits()
@@ -33,8 +35,24 @@ func _ready() -> void:
 	_western_exhibits()
 	_scifi_exhibits()
 	_outside()
+	_crypt()
+	_haunt_existing_rooms()
 	_security_cameras()
 	GameSettings.apply()
+	$Director.start(self)
+
+## Flickering lamps: irregular brightness with occasional drop-outs.
+func _process(delta: float) -> void:
+	var t := Time.get_ticks_msec() / 1000.0
+	for f in _flicker:
+		var l: Light3D = f[0]
+		var n := sin(t * 7.3 + f[2]) * 0.5 + sin(t * 13.1 + f[2] * 2.0) * 0.3 + sin(t * 2.1 + f[2]) * 0.2
+		var dropout := 0.15 if fmod(t + f[2], 6.7) < 0.12 else 1.0
+		l.light_energy = f[1] * clampf(0.72 + 0.28 * n, 0.3, 1.1) * dropout
+
+func _flick(l: Light3D) -> Light3D:
+	_flicker.append([l, l.light_energy, randf() * 20.0])
+	return l
 
 func _group(n: String) -> Node3D:
 	var g := Node3D.new(); g.name = n; add_child(g); return g
@@ -230,7 +248,7 @@ func _build_hall() -> void:
 		_tint(pl, Color(0.9, 0.86, 0.8))
 	for p in [Vector3(-7.5, HALL_H, 0), Vector3(7.5, HALL_H, 0)]:
 		_inst(H + "Environment/SM_Env_Ceiling_Light_03.tscn", arch, p, 0, Vector3(1.2, 1.2, 1.2))
-		_omni(p + Vector3(0, -2.2, 0), Color(1.0, 0.78, 0.5), 1.4, 7.5, "detail_light")
+		_flick(_omni(p + Vector3(0, -2.2, 0), Color(1.0, 0.78, 0.5), 1.4, 7.5))
 	# Moonlight through the skylights.
 	var moon := _spot(Vector3(-1.5, 16, -6), Vector3(0, 0, -1.0), Color(0.62, 0.72, 1.0), 9.0, 22.0, "shadow_med", 26.0)
 	moon.spot_attenuation = 0.4
@@ -296,9 +314,9 @@ func _build_room(theme: String, r: Rect2, wall_tint: Color, floor_tint: Color, d
 
 func _samurai_exhibits() -> void:
 	var c := Vector3(-5, 0, -12.5)
-	exhibit("SM_Chr_Samurai_Warrior_01_Black", c + Vector3(-1.4, 0, -3.4), 0, 1.85, 0.0)
-	exhibit("SM_Chr_Ninja_01_Black", c + Vector3(0.0, 0, -3.6), 0, 1.8, 0.0)
-	exhibit("SM_Chr_Geisha_01_White", c + Vector3(1.4, 0, -3.4), 0, 1.75, 0.0)
+	exhibit("SM_Chr_Samurai_Warrior_01_Black", c + Vector3(-3.6, 0, -3.4), 0, 1.85, 0.0)
+	exhibit("SM_Chr_Ninja_01_Black", c + Vector3(-2.2, 0, -3.6), 0, 1.8, 0.0)
+	exhibit("SM_Chr_Geisha_01_White", c + Vector3(-0.8, 0, -3.4), 0, 1.75, 0.0)
 	exhibit("SM_Prop_Bell_01", c + Vector3(0, 0, 0), 0, 1.6, 0.35, false, ROOM_H, Color(1.0, 0.8, 0.55), "Temple Bell")
 	exhibit("SM_Prop_Statue_Lion_01", c + Vector3(-1.6, 0, 3.4), 20, 1.0, 0.7)
 	exhibit("SM_Prop_Statue_Lion_02", c + Vector3(1.6, 0, 3.4), -20, 1.0, 0.7)
@@ -319,8 +337,8 @@ func _samurai_exhibits() -> void:
 func _horror_exhibits() -> void:
 	var c := Vector3(5, 0, -12.5)
 	exhibit("SM_Prop_Coffin_01", c + Vector3(0, 0, 0.3), 0, 2.1, 0.45, false, ROOM_H, Color(0.75, 0.6, 1.0))
-	exhibit("SM_Chr_Count_01", c + Vector3(-1.5, 0, -3.5), 15, 1.95, 0.0, false, ROOM_H, Color(0.8, 0.5, 0.9), "The Count")
-	exhibit("SM_Chr_Witch_01", c + Vector3(1.5, 0, -3.5), -15, 1.9, 0.0, false, ROOM_H, Color(0.6, 1.0, 0.6), "The Witch")
+	exhibit("SM_Chr_Count_01", c + Vector3(0.6, 0, -3.5), 15, 1.95, 0.0, false, ROOM_H, Color(0.8, 0.5, 0.9), "The Count")
+	exhibit("SM_Chr_Witch_01", c + Vector3(2.6, 0, -3.5), -15, 1.9, 0.0, false, ROOM_H, Color(0.6, 1.0, 0.6), "The Witch")
 	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(3.8, 0, 3.6), -135, 1.8, 0.0, false, ROOM_H, Color(0.85, 0.9, 1.0), "Anatomy Skeleton")
 	exhibit("SM_Prop_Gramophone_01", c + Vector3(-3.8, 0, -1.0), 90, 0.75, 0.9)
 	exhibit("SM_Prop_Crystal_Ball_01", c + Vector3(-3.8, 0, 1.6), 90, 0.4, 1.0, true, ROOM_H, Color(0.7, 0.6, 1.0))
@@ -329,7 +347,7 @@ func _horror_exhibits() -> void:
 	exhibit("SM_Prop_Clock_01", c + Vector3(-4.3, 0, 4.2), 45, 2.2, 0.0, false, ROOM_H, Color(1.0, 0.86, 0.68), "Grandfather Clock")
 	exhibit("SM_Prop_Chest_01", c + Vector3(-1.6, 0, 3.6), 0, 0.9, 0.4)
 	var lamp := exhibit("SM_Prop_Lamp_01", c + Vector3(1.6, 0, 3.6), 0, 0.6, 0.9, false, ROOM_H, Color(1.0, 0.7, 0.4), "Oil Lamp")
-	_omni(ExhibitFactory.bounds(lamp).get_center() + Vector3(0, 0.15, 0), Color(1.0, 0.55, 0.25), 0.8, 3.5, "detail_light")
+	_flick(_omni(ExhibitFactory.bounds(lamp).get_center() + Vector3(0, 0.15, 0), Color(1.0, 0.55, 0.25), 0.9, 3.5))
 	var flame := _inst(FX + "FX_Candle_Flame_01.tscn", lights, ExhibitFactory.bounds(lamp).end - Vector3(ExhibitFactory.bounds(lamp).size.x * 0.5, 0.02, ExhibitFactory.bounds(lamp).size.z * 0.5))
 	flame.scale = Vector3(0.6, 0.6, 0.6)
 	var paints := ["SM_Prop_Painting_01", "SM_Prop_Painting_02", "SM_Prop_Painting_03", "SM_Prop_Painting_04"]
@@ -357,7 +375,7 @@ func _western_exhibits() -> void:
 	wall_exhibit("SM_Bld_Sign_01", c + Vector3(-5 + WALL_T, 2.3, 2.2), Vector3(1, 0, 0), 1.8)
 	wall_exhibit("SM_Bld_Sign_05", c + Vector3(-5 + WALL_T, 2.3, -2.6), Vector3(1, 0, 0), 1.8)
 	var lantern := exhibit("SM_Prop_Lantern_Lit_01", c + Vector3(1.8, 0, -6.0), 0, 0.45, 1.0, false, ROOM_H, Color(1.0, 0.7, 0.4), "Oil Lantern")
-	_omni(ExhibitFactory.bounds(lantern).get_center(), Color(1.0, 0.6, 0.3), 0.9, 4.0, "detail_light")
+	_flick(_omni(ExhibitFactory.bounds(lantern).get_center(), Color(1.0, 0.6, 0.3), 0.9, 4.0))
 	_omni(c + Vector3(0, 2.6, 0), Color(1.0, 0.7, 0.45), 0.6, 9.0, "detail_light")
 
 func _scifi_exhibits() -> void:
@@ -383,6 +401,81 @@ func _scifi_exhibits() -> void:
 	_omni(c + Vector3(0, 0.5, -0.6), Color(0.2, 0.6, 1.0), 0.8, 3.5, "detail_light")
 	_omni(c + Vector3(0, 3.0, -4.0), Color(0.35, 0.75, 1.0), 1.1, 8.0)
 	_omni(c + Vector3(0, 3.0, 3.5), Color(0.9, 0.35, 1.0), 0.8, 8.0)
+
+# ------------------------------------------------------------------ haunted crypt
+
+## Set dressing without plinth, label or spotlight.
+func dress(prefab: String, pos: Vector3, yaw: float, size: float) -> Node3D:
+	var n := ExhibitFactory.build(prefab)
+	exhibits.add_child(n)
+	n.rotation_degrees.y = yaw
+	ExhibitFactory.fit(n, pos, size)
+	return n
+
+## Hangs a prop from the ceiling (chains, chandeliers).
+func hang(prefab: String, pos: Vector3, size: float, ceiling := ROOM_H) -> Node3D:
+	var n := ExhibitFactory.build(prefab)
+	exhibits.add_child(n)
+	var ab := ExhibitFactory.fit(n, pos, size)
+	n.position.y += ceiling - ab.end.y
+	return n
+
+func candle(pos: Vector3, size := 1.3) -> void:
+	var st := dress("SM_Prop_Candle_Stand_01", pos, randf() * 360.0, size)
+	var top := ExhibitFactory.bounds(st)
+	var f := _inst(FX + "FX_Candle_Flame_01.tscn", lights, Vector3(pos.x, top.end.y - 0.02, pos.z))
+	f.scale = Vector3.ONE * 0.5
+	_flick(_omni(Vector3(pos.x, top.end.y + 0.25, pos.z), Color(1.0, 0.55, 0.22), 0.9, 4.5))
+
+func webs(r: Rect2, height: float) -> void:
+	var corners := [[Vector3(r.position.x + 0.55, 0, r.position.y + 0.55), 45.0], [Vector3(r.end.x - 0.55, 0, r.position.y + 0.55), -45.0],
+		[Vector3(r.position.x + 0.55, 0, r.end.y - 0.55), 135.0], [Vector3(r.end.x - 0.55, 0, r.end.y - 0.55), -135.0]]
+	var kinds := ["SM_Env_SpiderWeb_01", "SM_Env_SpiderWeb_02", "SM_Env_SpiderWeb_03"]
+	for i in corners.size():
+		var w := ExhibitFactory.build(kinds[i % 3])
+		exhibits.add_child(w)
+		w.rotation_degrees.y = corners[i][1]
+		var ab := ExhibitFactory.fit(w, corners[i][0], 1.5)
+		w.position.y += height - ab.end.y - 0.05
+
+func _crypt() -> void:
+	var c := Vector3(0, 0, -22.5)
+	var r := Rect2(-10, -27.5, 20, 10)
+	_label("THE  CRYPT", Vector3(-2.5, 3.05, -17.5 + WALL_T + 0.02), 0, 46, Color(0.75, 1.0, 0.8))
+	_label("THE  CRYPT", Vector3(2.5, 3.05, -17.5 + WALL_T + 0.02), 0, 46, Color(0.75, 1.0, 0.8))
+	exhibit("SM_Prop_Coffin_01", c + Vector3(-2.6, 0, 0.4), 0, 2.1, 0.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Sealed Coffin")
+	exhibit("SM_Prop_Coffin_01", c + Vector3(2.6, 0, 0.4), 0, 2.1, 0.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Open Coffin")
+	exhibit("SM_Prop_Urn_01", c + Vector3(0, 0, -1.6), 0, 0.7, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Funerary Urn")
+	var chand := hang("SM_Prop_Light_Chandelier_01", c + Vector3(0, 0, 0.4), 1.5)
+	_flick(_omni(ExhibitFactory.bounds(chand).get_center() + Vector3(0, -0.4, 0), Color(1.0, 0.6, 0.3), 1.6, 8.0))
+	# A caged skeleton that sways eerily, specimen jars and a bird cage.
+	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(-7.6, 0, -2.8), 35, 1.8, 0.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Prisoner")
+	dress("SM_Prop_Cage_01", c + Vector3(-7.6, 0.12, -2.8), 35, 2.4)
+	exhibit("SM_Prop_Specimen_Jar_01", c + Vector3(-9.0, 0, 1.2), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
+	exhibit("SM_Prop_Specimen_Jar_02", c + Vector3(-9.0, 0, 3.4), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
+	exhibit("SM_Prop_Bird_Cage_01", c + Vector3(9.0, 0, 1.2), -90, 0.7, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Empty Cage")
+	exhibit("SM_Gen_Prop_Skull_01", c + Vector3(9.0, 0, 3.4), -90, 0.35, 1.05, true, ROOM_H, Color(0.55, 1.0, 0.7), "Skull")
+	wall_exhibit("SM_Prop_Exorcist_Cross_01", c + Vector3(0, 1.9, -5 + WALL_T), Vector3(0, 0, 1), 1.3)
+	# Dressing: barrels and crates piled in the corners, chains, skulls, candles, webs.
+	dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(8.8, 0, -3.9), 0, 1.0)
+	dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(7.8, 0, -4.1), 40, 1.0)
+	dress("SM_Gen_Prop_Crate_01", c + Vector3(8.7, 0, -2.6), 15, 0.9)
+	dress("SM_Gen_Prop_Chest_02", c + Vector3(-8.6, 0, 4.0), 80, 0.9)
+	dress("SM_Gen_Prop_Crate_01", c + Vector3(6.0, 0, 4.2), -20, 0.8)
+	for x in [-5.2, -0.6, 4.4, 7.4]:
+		hang("SM_Gen_Prop_Chain_01", c + Vector3(x, 0, -3.6 + fmod(absf(x), 2.0)), 1.4)
+	for s in [Vector3(-2.2, 0, 2.9), Vector3(3.1, 0, 2.6), Vector3(-0.4, 0, 3.6)]:
+		dress("SM_Gen_Prop_Skull_01", c + s, randf() * 360.0, 0.28)
+	for p in [c + Vector3(-4.8, 0, -3.8), c + Vector3(4.8, 0, -3.8), c + Vector3(-4.8, 0, 4.0), c + Vector3(4.6, 0, 3.0)]:
+		candle(p)
+	webs(r, ROOM_H)
+	_omni(c + Vector3(0, 2.4, 0), Color(0.35, 0.8, 0.55), 0.7, 12.0)
+
+func _haunt_existing_rooms() -> void:
+	webs(Rect2(0, -17.5, 10, 10), ROOM_H)
+	webs(Rect2(-10, -7.5, 20, 15), HALL_H)
+	candle(Vector3(1.0, 0, -9.0), 1.2)
+	candle(Vector3(9.0, 0, -16.6), 1.2)
 
 # ------------------------------------------------------------------ outside & cameras
 

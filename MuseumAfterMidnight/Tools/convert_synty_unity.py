@@ -54,9 +54,19 @@ SELECTION = {
     "PolygonHorrorMansion": ["SM_Prop_Coffin_01", "SM_Prop_Gramophone_01", "SM_Prop_Crystal_Ball_01", "SM_Prop_Clock_01",
                              "SM_Prop_Mask_Count_01", "SM_Prop_Painting_01", "SM_Prop_Painting_02", "SM_Prop_Painting_03",
                              "SM_Prop_Painting_04", "SM_Prop_Mirror_01", "SM_Prop_Lamp_01", "SM_Prop_Chest_01",
-                             "SM_Prop_Book_Open_01", "SM_Chr_Count_01", "SM_Chr_Witch_01"],
+                             "SM_Prop_Book_Open_01", "SM_Chr_Count_01", "SM_Chr_Witch_01",
+                             # Haunted expansion: monsters and crypt dressing.
+                             "SM_Chr_Werewolf_01", "SM_Chr_Demon_01", "SM_Chr_Ghoul_01", "SM_Chr_Butcher_01",
+                             "SM_Chr_Yokai_01", "SM_Chr_Gimp_01",
+                             "SM_Env_SpiderWeb_01", "SM_Env_SpiderWeb_02", "SM_Env_SpiderWeb_03",
+                             "SM_Prop_Candle_Stand_01", "SM_Prop_Candle_Stand_02", "SM_Prop_Candle_02",
+                             "SM_Prop_Cage_01", "SM_Prop_Exorcist_Cross_01", "SM_Prop_Light_Chandelier_01",
+                             "SM_Prop_Specimen_Jar_01", "SM_Prop_Specimen_Jar_02", "SM_Prop_Torch_01",
+                             "SM_Prop_Urn_01", "SM_Prop_Bird_Cage_01"],
     "PolygonGeneric": ["SM_Gen_Prop_Statue_01", "SM_Gen_Prop_Statue_02", "SM_Gen_Prop_Statue_03", "SM_Gen_Prop_Statue_04",
-                       "SM_Gen_Prop_Statue_05", "SM_Gen_Chr_Skeleton_01"],
+                       "SM_Gen_Prop_Statue_05", "SM_Gen_Chr_Skeleton_01",
+                       "SM_Gen_Prop_Skull_01", "SM_Gen_Prop_Chain_01", "SM_Gen_Prop_Chain_Anchor_01",
+                       "SM_Gen_Prop_Barrel_Wood_01", "SM_Gen_Prop_Crate_01", "SM_Gen_Prop_Chest_02"],
 }
 
 DOC_RE = re.compile(r"^--- !u!(\d+) &(-?\d+)", re.M)

@@ -1562,6 +1562,355 @@
   ],
   "character": true
  },
+ "SM_Chr_Werewolf_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Werewolf_01",
+    "mesh": "SM_Chr_Werewolf_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Demon_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Demon_01",
+    "mesh": "SM_Chr_Demon_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Demon_Tail_01",
+    "mesh": "SM_Chr_Demon_Tail_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Demon_Tail_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Ghoul_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Ghoul_01",
+    "mesh": "SM_Chr_Ghoul_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Butcher_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Butcher_01",
+    "mesh": "SM_Chr_Butcher_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Yokai_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Yokai_01",
+    "mesh": "SM_Chr_Yokai_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Gimp_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Gimp_01",
+    "mesh": "SM_Chr_Gimp_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Env_SpiderWeb_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_SpiderWeb_01",
+    "mesh": "SM_Env_SpiderWeb_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Spiderweb_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Env_SpiderWeb_02": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_SpiderWeb_02",
+    "mesh": "SM_Env_SpiderWeb_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Spiderweb_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Env_SpiderWeb_03": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_03.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_SpiderWeb_03",
+    "mesh": "SM_Env_SpiderWeb_03",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Env_SpiderWeb_03.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Spiderweb_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Candle_Stand_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_Stand_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Candle_Stand_01",
+    "mesh": "SM_Prop_Candle_Stand_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_Stand_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Candle_Stand_02": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_Stand_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Candle_Stand_02",
+    "mesh": "SM_Prop_Candle_Stand_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_Stand_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Candle_02": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Candle_02",
+    "mesh": "SM_Prop_Candle_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Candle_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Cage_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Cage_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Cage_01",
+    "mesh": "SM_Prop_Cage_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Cage_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Cage_01_Door_01",
+    "mesh": "SM_Prop_Cage_01_Door_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Cage_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Exorcist_Cross_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Exorcist_Cross_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Exorcist_Cross_01",
+    "mesh": "SM_Prop_Exorcist_Cross_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Exorcist_Cross_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Light_Chandelier_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Light_Chandelier_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Light_Chandelier_01_Main_02",
+    "mesh": "SM_Prop_Light_Chandelier_01_Main_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Light_Chandelier_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Light_Chandelier_01",
+    "mesh": "SM_Prop_Light_Chandelier_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Light_Chandelier_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Specimen_Jar_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Specimen_Jar_01",
+    "mesh": "SM_Prop_Specimen_Jar_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres",
+     "res://Assets/Imported/HorrorMansion/Materials/Glass_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Specimen_Jar_01_Worm_01",
+    "mesh": "SM_Prop_Specimen_Jar_01_Worm_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Specimen_Jar_02": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Specimen_Jar_02",
+    "mesh": "SM_Prop_Specimen_Jar_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Specimen_Jar_02_Glass",
+    "mesh": "SM_Prop_Specimen_Jar_02_Glass",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Specimen_Jar_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Glass_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Torch_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Torch_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Torch_01",
+    "mesh": "SM_Prop_Torch_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Torch_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Urn_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Urn_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Urn_01_Lid_01",
+    "mesh": "SM_Prop_Urn_01_Lid_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Urn_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Urn_01",
+    "mesh": "SM_Prop_Urn_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Urn_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Bird_Cage_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Bird_Cage_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Bird_Cage_01",
+    "mesh": "SM_Prop_Bird_Cage_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Bird_Cage_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
  "SM_Gen_Prop_Statue_01": {
   "pack": "Generic",
   "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_01.fbx",
@@ -1651,5 +2000,103 @@
    }
   ],
   "character": true
+ },
+ "SM_Gen_Prop_Skull_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Skull_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Skull_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Skull_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Chain_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chain_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Chain_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chain_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Chain_Anchor_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chain_Anchor_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Chain_Anchor_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chain_Anchor_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Barrel_Wood_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Barrel_Wood_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Barrel_Wood_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Barrel_Wood_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Crate_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Crate_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Crate_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Crate_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Chest_02": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chest_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Chest_02_Lid_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chest_02.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Gen_Prop_Chest_02",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Chest_02.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
  }
 }
