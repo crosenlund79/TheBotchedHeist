@@ -1,0 +1,1655 @@
+{
+ "SM_Veh_Stagecoach_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Veh_Stagecoach_01_Wheel_rr",
+    "mesh": "SM_Veh_Stagecoach_01_Wheel_rr",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Door_r",
+    "mesh": "SM_Veh_Stagecoach_01_Door_r",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Wheel_fl",
+    "mesh": "SM_Veh_Stagecoach_01_Wheel_fl",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Wheel_Pivot",
+    "mesh": "SM_Veh_Stagecoach_01_Wheel_Pivot",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01",
+    "mesh": "SM_Veh_Stagecoach_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Wheel_fr",
+    "mesh": "SM_Veh_Stagecoach_01_Wheel_fr",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Wheel_rl",
+    "mesh": "SM_Veh_Stagecoach_01_Wheel_rl",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Stagecoach_01_Door_l",
+    "mesh": "SM_Veh_Stagecoach_01_Door_l",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Veh_Stagecoach_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Piano_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Piano_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Piano_01",
+    "mesh": "SM_Prop_Piano_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Piano_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Revolver_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Revolver_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Revolver_01_Trigger",
+    "mesh": "SM_Wep_Revolver_01_Trigger",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Revolver_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Revolver_01_Hammer",
+    "mesh": "SM_Wep_Revolver_01_Hammer",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Revolver_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Revolver_01_Cylander",
+    "mesh": "SM_Wep_Revolver_01_Cylander",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Revolver_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Revolver_01",
+    "mesh": "SM_Wep_Revolver_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Revolver_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Rifle_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Rifle_01_Lever",
+    "mesh": "SM_Wep_Rifle_01_Lever",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Rifle_01_Trigger",
+    "mesh": "SM_Wep_Rifle_01_Trigger",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Rifle_01",
+    "mesh": "SM_Wep_Rifle_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Rifle_01_Slide",
+    "mesh": "SM_Wep_Rifle_01_Slide",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Rifle_01_Hammer",
+    "mesh": "SM_Wep_Rifle_01_Hammer",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Rifle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Shotgun_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Shotgun_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Shotgun_01_Trigger_02",
+    "mesh": "SM_Wep_Shotgun_01_Trigger_02",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Shotgun_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Shotgun_01_Barrel",
+    "mesh": "SM_Wep_Shotgun_01_Barrel",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Shotgun_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Shotgun_01_Trigger_01",
+    "mesh": "SM_Wep_Shotgun_01_Trigger_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Shotgun_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Shotgun_01",
+    "mesh": "SM_Wep_Shotgun_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Wep_Shotgun_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Saddle_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Saddle_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Saddle_01",
+    "mesh": "SM_Prop_Saddle_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Saddle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Cow_Skull_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Cow_Skull_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Cow_Skull_01",
+    "mesh": "SM_Prop_Cow_Skull_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Cow_Skull_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Lantern_Lit_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Lantern_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Lantern_01_Glass",
+    "mesh": "SM_Prop_Lantern_01_Glass",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Lantern_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/Light_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Lantern_Lit_01",
+    "mesh": "SM_Prop_Lantern_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Prop_Lantern_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Env_Cactus_03": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Env_Cactus_03.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_Cactus_03",
+    "mesh": "SM_Env_Cactus_03",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Env_Cactus_03.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Env_Cactus_07": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Env_Cactus_07.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_Cactus_07",
+    "mesh": "SM_Env_Cactus_07",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Env_Cactus_07.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Bld_Sign_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Bld_Sign_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Bld_Sign_01",
+    "mesh": "SM_Bld_Sign_01",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Bld_Sign_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/Signs_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Bld_Sign_05": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/SM_Bld_Sign_05.fbx",
+  "parts": [
+   {
+    "node": "SM_Bld_Sign_05",
+    "mesh": "SM_Bld_Sign_05",
+    "fbx": "res://Assets/Imported/Western/Models/SM_Bld_Sign_05.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/Signs_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Chr_Sheriff_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Sheriff_01",
+    "mesh": "Character_Sheriff_01",
+    "fbx": "res://Assets/Imported/Western/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Cowgirl_01": {
+  "pack": "Western",
+  "fbx": "res://Assets/Imported/Western/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Cowgirl_01",
+    "mesh": "Character_Cowgirl_01",
+    "fbx": "res://Assets/Imported/Western/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Western/Materials/PolygonWestern_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Prop_Statue_Lion_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Statue_Lion_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Statue_Lion_01",
+    "mesh": "SM_Prop_Statue_Lion_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Statue_Lion_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Statue_Lion_02": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Statue_Lion_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Statue_Lion_02",
+    "mesh": "SM_Prop_Statue_Lion_02",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Statue_Lion_02.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_03.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Bell_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Bell_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Bell_01",
+    "mesh": "SM_Prop_Bell_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Bell_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Bonsai_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Bonsai_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Bonsai_01",
+    "mesh": "SM_Prop_Bonsai_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Bonsai_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Stone_Lantern_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Stone_Lantern_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Stone_Lantern_01",
+    "mesh": "SM_Prop_Stone_Lantern_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Stone_Lantern_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Paper_Lantern_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Paper_Lantern_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Paper_Lantern_01",
+    "mesh": "SM_Prop_Paper_Lantern_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Paper_Lantern_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_WarriorShoulderArmor": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_WarriorShoulderArmor.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_WarriorShoulderArmor",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_WarriorShoulderArmor.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_Character_01_Black.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Odachi_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Odachi_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Odachi_01",
+    "mesh": "SM_Wep_Odachi_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Odachi_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Naginata_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Naginata_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Naginata_01",
+    "mesh": "SM_Wep_Naginata_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Naginata_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Ninjato_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Ninjato_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Ninjato_01",
+    "mesh": "SM_Wep_Ninjato_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Ninjato_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Sai_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Sai_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Sai_01",
+    "mesh": "SM_Wep_Sai_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Wep_Sai_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_02.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Zen_Lantern_01": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Zen_Lantern_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Zen_Lantern_01",
+    "mesh": "SM_Prop_Zen_Lantern_01",
+    "fbx": "res://Assets/Imported/Samurai/Models/SM_Prop_Zen_Lantern_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Chr_Samurai_Warrior_01_Black": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Samurai_Warrior",
+    "mesh": "Character_Samurai_Warrior",
+    "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_Character_01_Black.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Ninja_01_Black": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Ninja",
+    "mesh": "Character_Ninja",
+    "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_Character_01_Black.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Geisha_01_White": {
+  "pack": "Samurai",
+  "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Geisha",
+    "mesh": "Character_Geisha",
+    "fbx": "res://Assets/Imported/Samurai/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Samurai/Materials/PolygonSamurai_Character_01l_White.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Veh_Boat_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Veh_Sail_Closed_01",
+    "mesh": "SM_Veh_Sail_Closed_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_BoatHead_03",
+    "mesh": "SM_Veh_BoatHead_03",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Open_02",
+    "mesh": "SM_Veh_Sail_Open_02",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Open_03",
+    "mesh": "SM_Veh_Sail_Open_03",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_BoatHead_02",
+    "mesh": "SM_Veh_BoatHead_02",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Open_04",
+    "mesh": "SM_Veh_Sail_Open_04",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Open_01",
+    "mesh": "SM_Veh_Sail_Open_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Closed_04",
+    "mesh": "SM_Veh_Sail_Closed_04",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Closed_02",
+    "mesh": "SM_Veh_Sail_Closed_02",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Oars_01",
+    "mesh": "SM_Veh_Oars_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_BoatHead_01",
+    "mesh": "SM_Veh_BoatHead_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Boat_01",
+    "mesh": "SM_Veh_Boat_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Sail_Closed_03",
+    "mesh": "SM_Veh_Sail_Closed_03",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Veh_Boat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Shield_Decor_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Shield_Decor_01",
+    "mesh": "SM_Prop_Shield_Decor_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Shield_Decor_02": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Shield_Decor_02",
+    "mesh": "SM_Prop_Shield_Decor_02",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_02.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Shield_Decor_03": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_03.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Shield_Decor_03",
+    "mesh": "SM_Prop_Shield_Decor_03",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_03.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Shield_Decor_04": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_04.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Shield_Decor_04",
+    "mesh": "SM_Prop_Shield_Decor_04",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Shield_Decor_04.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Env_Stone_Statue_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Env_Stone_Statue_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Env_Stone_Statue_01",
+    "mesh": "SM_Stone_Statue_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Env_Stone_Statue_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Rock_Totem_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Rock_Totem_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Rock_Totem_01",
+    "mesh": "SM_Prop_Rock_Totem_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Rock_Totem_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Chest_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Chest_01_Handle_02",
+    "mesh": "SM_Prop_Chest_01_Handle_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Chest_01_Latch_01",
+    "mesh": "SM_Prop_Chest_01_Latch_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Chest_01_Lid_01",
+    "mesh": "SM_Prop_Chest_01_Lid_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Chest_01_Handle_01",
+    "mesh": "SM_Prop_Chest_01_Handle_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Chest_01",
+    "mesh": "SM_Prop_Chest_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Chest_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Anvil_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Anvil_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Anvil_01",
+    "mesh": "SM_Prop_Anvil_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Prop_Anvil_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_LargeAxe_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_LargeAxe_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_LargeAxe_01",
+    "mesh": "SM_Wep_LargeAxe_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_LargeAxe_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Horn_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_Horn_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Horn_01",
+    "mesh": "SM_Wep_Horn_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_Horn_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Sword_01": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_Sword_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Sword_01",
+    "mesh": "SM_Wep_Sword_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/SM_Wep_Sword_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/PolyVikings_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Chr_Chief_01_Brown": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Item_CoinBag",
+    "mesh": "Item_CoinBag",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Black.tres"
+    ]
+   },
+   {
+    "node": "Character_Viking_Chief_01",
+    "mesh": "Character_Viking_Chief_01",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Brown.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Shieldmadien_Brown": {
+  "pack": "Vikings",
+  "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Item_Shield",
+    "mesh": "Item_Shield",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Black.tres"
+    ]
+   },
+   {
+    "node": "Item_Dagger",
+    "mesh": "Item_Dagger",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Black.tres"
+    ]
+   },
+   {
+    "node": "Item_WarriorSholderArmor",
+    "mesh": "Item_WarriorSholderArmor",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Black.tres"
+    ]
+   },
+   {
+    "node": "Item_WarriorSholderArmor 1",
+    "mesh": "Item_WarriorSholderArmor",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Black.tres"
+    ]
+   },
+   {
+    "node": "Character_Shieldmadien",
+    "mesh": "Character_Shieldmadien",
+    "fbx": "res://Assets/Imported/Vikings/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Vikings/Materials/Character_01_Brown.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Veh_Hover_Bike_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hover_Bike_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Veh_Hover_Bike_01_Glass",
+    "mesh": "SM_Veh_Hover_Bike_01_Glass",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hover_Bike_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Glass_Vehicles_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Hover_Bike_01",
+    "mesh": "SM_Veh_Hover_Bike_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hover_Bike_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Veh_Hover_Bike_01_HandleBars",
+    "mesh": "SM_Veh_Hover_Bike_01_HandleBars",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hover_Bike_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Veh_Hoverboard_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hoverboard_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Veh_Hoverboard_01",
+    "mesh": "SM_Veh_Hoverboard_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Veh_Hoverboard_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Drone_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Drone_01",
+    "mesh": "SM_Prop_Drone_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Drone_Ball_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_Ball_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Drone_Ball_01",
+    "mesh": "SM_Prop_Drone_Ball_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_Ball_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Drone_Quad_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_Quad_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Drone_Quad_01",
+    "mesh": "SM_Prop_Drone_Quad_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Drone_Quad_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Hologram_Bottle_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Hologram_Bottle_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Hologram_Bottle_01",
+    "mesh": "SM_Prop_Hologram_Bottle_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Hologram_Bottle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Hologram_Base_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Bottle_01_Outline",
+    "mesh": "SM_Prop_Bottle_01_Outline",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Hologram_Bottle_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Hologram_Outline_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Robotic_Part_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Robotic_Part_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Robotic_Part_01",
+    "mesh": "SM_Prop_Robotic_Part_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_Robotic_Part_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_VendingMachine_Soda_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_VendingMachine_Soda_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_VendingMachine_Soda_01_Glass",
+    "mesh": "SM_Prop_VendingMachine_Soda_01_Glass",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_VendingMachine_Soda_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Glass_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_VendingMachine_Soda_01",
+    "mesh": "SM_Prop_VendingMachine_Soda_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Prop_VendingMachine_Soda_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Sign_Neon_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Sign_Neon_01",
+    "mesh": "SM_Sign_Neon_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Neon_Signs_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Sign_Neon_05": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_05.fbx",
+  "parts": [
+   {
+    "node": "SM_Sign_Neon_05",
+    "mesh": "SM_Sign_Neon_05",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_05.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Neon_Signs_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Sign_Neon_Flat_04": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_Flat_04.fbx",
+  "parts": [
+   {
+    "node": "SM_Sign_Neon_Flat_04",
+    "mesh": "SM_Sign_Neon_Flat_04",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Sign_Neon_Flat_04.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/Neon_Signs_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Wep_Pistol_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Wep_Pistol_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Wep_Pistol_Trigger_01",
+    "mesh": "SM_Wep_Pistol_Trigger_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Wep_Pistol_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Pistol_01",
+    "mesh": "SM_Wep_Pistol_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Wep_Pistol_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Wep_Pistol_Slide_01",
+    "mesh": "SM_Wep_Pistol_Slide_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/SM_Wep_Pistol_01.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Chr_Cop_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Cop_01",
+    "mesh": "Character_Cop_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Robot_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Robot_01",
+    "mesh": "Character_Robot_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Hacker_Female_01": {
+  "pack": "SciFiCity",
+  "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "Character_Hacker_Female_01",
+    "mesh": "Character_Hacker_Female_01",
+    "fbx": "res://Assets/Imported/SciFiCity/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/SciFiCity/Materials/PolygonScifi_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Prop_Coffin_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Coffin_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Coffin_01_Lid_01",
+    "mesh": "SM_Prop_Coffin_01_Lid_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Coffin_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Coffin_01",
+    "mesh": "SM_Prop_Coffin_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Coffin_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Gramophone_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Gramophone_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Gramophone_01_Record_01",
+    "mesh": "SM_Prop_Gramophone_01_Record_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Gramophone_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Gramophone_01",
+    "mesh": "SM_Prop_Gramophone_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Gramophone_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Gramophone_01_Horn_01",
+    "mesh": "SM_Prop_Gramophone_01_Horn_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Gramophone_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Crystal_Ball_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Crystal_Ball_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Crystal_Ball_01_Glass_01",
+    "mesh": "SM_Prop_Crystal_Ball_01_Glass_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Crystal_Ball_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Glass_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Crystal_Ball_01",
+    "mesh": "SM_Prop_Crystal_Ball_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Crystal_Ball_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Clock_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Clock_01_Glass_01",
+    "mesh": "SM_Prop_Clock_01_Glass_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/BrokenGlass_01.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Clock_01_Hand_01",
+    "mesh": "SM_Prop_Clock_01_Hand_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Clock_01_Hand_02",
+    "mesh": "SM_Prop_Clock_01_Hand_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Clock_01",
+    "mesh": "SM_Prop_Clock_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Prop_Clock_01_Pendulum_01",
+    "mesh": "SM_Prop_Clock_01_Pendulum_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Clock_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Mask_Count_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Mask_Count_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Mask_Count_01",
+    "mesh": "SM_Prop_Mask_Count_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Mask_Count_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Painting_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Painting_01",
+    "mesh": "SM_Prop_Painting_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Painting_Portrait_01.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Painting_02": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Painting_02",
+    "mesh": "SM_Prop_Painting_02",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_02.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres",
+     "res://Assets/Imported/HorrorMansion/Materials/Painting_Portrait_03.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Painting_03": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_03.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Painting_03",
+    "mesh": "SM_Prop_Painting_03",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_03.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres",
+     "res://Assets/Imported/HorrorMansion/Materials/Painting_Portrait_06.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Painting_04": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_04.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Painting_04",
+    "mesh": "SM_Prop_Painting_04",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Painting_04.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/Painting_Portrait_02.tres",
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Mirror_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Mirror_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Mirror_01",
+    "mesh": "SM_Prop_Mirror_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Mirror_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Lamp_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Lamp_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Lamp_01",
+    "mesh": "SM_Prop_Lamp_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Lamp_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Prop_Book_Open_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Book_Open_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Prop_Book_Open_01",
+    "mesh": "SM_Prop_Book_Open_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Prop_Book_Open_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Chr_Count_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Count_Hair_01",
+    "mesh": "SM_Chr_Count_Hair_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Count_Hair_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Count_Hat_01",
+    "mesh": "SM_Chr_Count_Hat_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Count_Hat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Count_Cape_01",
+    "mesh": "SM_Chr_Count_Cape_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Count_Cape_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Count_01",
+    "mesh": "SM_Chr_Count_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Chr_Witch_01": {
+  "pack": "HorrorMansion",
+  "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Chr_Witch_Hat_01",
+    "mesh": "SM_Chr_Witch_Hat_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Witch_Hat_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Witch_Nose_01",
+    "mesh": "SM_Chr_Witch_Nose_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Witch_Nose_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Witch_Hair_01",
+    "mesh": "SM_Chr_Witch_Hair_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Witch_Hair_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Witch_Antlers_01",
+    "mesh": "SM_Chr_Witch_Antlers_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/SM_Chr_Witch_Antlers_01.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   },
+   {
+    "node": "SM_Chr_Witch_01",
+    "mesh": "SM_Chr_Witch_01",
+    "fbx": "res://Assets/Imported/HorrorMansion/Models/Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/HorrorMansion/Materials/PolygonHorrorMansion_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ },
+ "SM_Gen_Prop_Statue_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_01.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Statue_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_01.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Statue_02": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_02.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Statue_02",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_02.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Statue_03": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_03.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Statue_03",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_03.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Statue_04": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_04.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Statue_04",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_04.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Prop_Statue_05": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_05.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Prop_Statue_05",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/SM_Gen_Prop_Statue_05.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": false
+ },
+ "SM_Gen_Chr_Skeleton_01": {
+  "pack": "Generic",
+  "fbx": "res://Assets/Imported/Generic/Models/Generic_Characters.fbx",
+  "parts": [
+   {
+    "node": "SM_Gen_Chr_Skeleton_01",
+    "mesh": "",
+    "fbx": "res://Assets/Imported/Generic/Models/Generic_Characters.fbx",
+    "materials": [
+     "res://Assets/Imported/Generic/Materials/Generic_01_A.tres"
+    ]
+   }
+  ],
+  "character": true
+ }
+}

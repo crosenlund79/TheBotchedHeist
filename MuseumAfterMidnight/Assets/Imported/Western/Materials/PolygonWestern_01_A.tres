@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Imported/Western/Textures/PolygonWestern_01_A.png" id="1_tex"]
+
+[resource]
+resource_name = "PolygonWestern_01_A"
+albedo_texture = ExtResource("1_tex")
+albedo_color = Color(1.0000, 1.0000, 1.0000, 1.0000)
+roughness = 1.000
+metallic = 0.000
+transparency = 2
+alpha_scissor_threshold = 0.500
+cull_mode = 2

@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Imported/HorrorMansion/Textures/Painting_Portrait_06.png" id="1_tex"]
+
+[resource]
+resource_name = "Painting_Portrait_06"
+albedo_texture = ExtResource("1_tex")
+albedo_color = Color(1.0000, 1.0000, 1.0000, 1.0000)
+roughness = 0.900
+metallic = 0.000
+transparency = 2
+alpha_scissor_threshold = 0.500
+cull_mode = 2

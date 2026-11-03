@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Light_01"
+albedo_color = Color(0.9191, 0.7938, 0.6353, 1.0000)
+roughness = 0.500
+metallic = 0.000
+transparency = 2
+alpha_scissor_threshold = 0.500
+cull_mode = 2
+emission_enabled = true
+emission = Color(1.0000, 0.2690, 0.0000, 1)
+emission_operator = 1
+emission_energy_multiplier = 2.0

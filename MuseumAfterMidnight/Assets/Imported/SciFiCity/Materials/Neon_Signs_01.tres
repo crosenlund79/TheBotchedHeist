@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Imported/SciFiCity/Textures/Neon_Signs_01.png" id="1_tex"]
+
+[resource]
+resource_name = "Neon_Signs_01"
+albedo_color = Color(1.0000, 1.0000, 1.0000, 1.0000)
+roughness = 0.800
+metallic = 0.000
+emission_enabled = true
+emission = Color(4.0000, 4.0000, 4.0000, 1)
+emission_operator = 1
+emission_texture = ExtResource("1_tex")
+emission_energy_multiplier = 2.0

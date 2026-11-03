@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Imported/SciFiCity/Textures/PolygonScifi_01_A.png" id="1_tex"]
+[ext_resource type="Texture2D" path="res://Assets/Imported/SciFiCity/Textures/PolygonScifi_01_Emissive.png" id="2_tex"]
+
+[resource]
+resource_name = "PolygonScifi_01_A"
+albedo_texture = ExtResource("1_tex")
+albedo_color = Color(1.0000, 1.0000, 1.0000, 1.0000)
+roughness = 0.800
+metallic = 0.000
+transparency = 2
+alpha_scissor_threshold = 0.500
+cull_mode = 2
+emission_enabled = true
+emission = Color(1.0000, 1.0000, 1.0000, 1)
+emission_operator = 1
+emission_texture = ExtResource("2_tex")
+emission_energy_multiplier = 2.0

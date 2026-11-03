@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Glass_Vehicles_01"
+albedo_color = Color(0.2500, 0.2500, 0.2500, 0.3500)
+roughness = 0.213
+metallic = 0.419
+transparency = 1
+cull_mode = 2
