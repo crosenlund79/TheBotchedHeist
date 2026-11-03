@@ -1,0 +1,213 @@
+<title>Heist Asset Ledger</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: an inspection ledger. Sticky filter rail on top, dense card grid, slide-over detail sheet. */
+:root{
+  --bg:#eef0f2; --panel:#ffffff; --ink:#1b2129; --muted:#5d6874; --line:#d5dade;
+  --brass:#a87a1e; --brass-soft:#f3e7cc; --thumb:#e4e8ec;
+  --ok:#2f7d4f; --ok-bg:#dff1e6; --warn:#a1580c; --warn-bg:#fbe8d2; --info:#2d5f8a; --info-bg:#dde9f4;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --panel:#1b2128; --ink:#e6e9ec; --muted:#97a2ad; --line:#2c343d;
+  --brass:#d7a845; --brass-soft:#3a2f17; --thumb:#232a32;
+  --ok:#6fcf97; --ok-bg:#183326; --warn:#f0a35a; --warn-bg:#3a2612; --info:#7fb3e0; --info-bg:#172b3d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#e6e9ec; --muted:#97a2ad; --line:#2c343d;
+  --brass:#d7a845; --brass-soft:#3a2f17; --thumb:#232a32;
+  --ok:#6fcf97; --ok-bg:#183326; --warn:#f0a35a; --warn-bg:#3a2612; --info:#7fb3e0; --info-bg:#172b3d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{padding-block:28px 18px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,52px);line-height:1;margin:.2em 0 .25em;letter-spacing:.01em;text-wrap:balance}
+.lede{max-width:70ch;color:var(--muted);margin:0}
+.tally{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:18px;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.tally b{font-size:22px;font-family:var(--display);font-weight:600;color:var(--ink);margin-right:4px}
+.tally span{color:var(--muted)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tabrow{display:flex;gap:4px;overflow-x:auto}
+.tabrow button{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:.03em;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 14px 8px;cursor:pointer;white-space:nowrap}
+.tabrow button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--brass)}
+.tabrow button:focus-visible,.chip:focus-visible,.card:focus-visible,input:focus-visible,select:focus-visible,.close:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:12px}
+.filters input,.filters select{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}
+.filters input{flex:1 1 220px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:12px}
+.chip{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 10px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip small{opacity:.65;margin-left:4px}
+.count{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+section.view{padding-block:8px 48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0;font:inherit;color:inherit}
+.card:hover{border-color:var(--brass)}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--thumb);display:block}
+.card .meta{padding:8px 10px 10px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.card .nm{font-family:var(--mono);font-size:11.5px;line-height:1.3;word-break:break-all}
+.card .rp{font-size:13px;color:var(--muted);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pills{display:flex;flex-wrap:wrap;gap:4px}
+.pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.p-ready{background:var(--ok-bg);color:var(--ok)}
+.p-conv{background:var(--warn-bg);color:var(--warn)}
+.p-prob{background:var(--brass-soft);color:var(--brass)}
+.p-info{background:var(--info-bg);color:var(--info)}
+.group-h{font-family:var(--display);font-size:24px;font-weight:600;margin:22px 0 10px;display:flex;gap:10px;align-items:baseline}
+.group-h span{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;background:rgba(10,14,18,.45)}
+.sheet[hidden]{display:none!important}
+.sheet .inner{width:min(560px,100%);height:100%;overflow-y:auto;background:var(--panel);border-left:1px solid var(--line);padding:calc(18px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 20px}
+.sheet img{width:100%;border-radius:6px;background:var(--thumb)}
+.sheet h2{font-family:var(--mono);font-size:16px;margin:14px 0 4px;word-break:break-all}
+.sheet .rp{font-size:17px;margin:0 0 10px}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:14px 0;font-size:14px}
+dl.kv dt{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+dl.kv dd{margin:0;min-width:0;word-break:break-word}
+.close{float:right;font:inherit;font-family:var(--mono);font-size:13px;background:none;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+.note{background:var(--warn-bg);color:var(--ink);border-radius:6px;padding:10px 12px;font-size:14px;margin-top:10px}
+.note.info{background:var(--info-bg)}
+.fxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.fx{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+.fx img{width:100%;aspect-ratio:1;object-fit:cover;background:#16191d}
+.fx .meta{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.fx h3{font-family:var(--mono);font-size:13.5px;margin:0}
+.fx p{margin:0;font-size:14px}
+.fx .use{color:var(--muted)}
+.fx .stats{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:16px}
+figure.shot{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+figure.shot img{width:100%;display:block}
+figure.shot figcaption{padding:10px 14px 14px;font-size:14px}
+figure.shot b{font-family:var(--display);font-size:19px;font-weight:600;display:block}
+.report{max-width:78ch}
+.report h2{font-family:var(--display);font-size:28px;font-weight:600;margin:30px 0 8px}
+.report h3{font-family:var(--display);font-size:20px;font-weight:600;margin:20px 0 6px}
+.report p,.report li{font-size:15.5px}
+.report ul{padding-left:20px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:0}
+code{font-family:var(--mono);font-size:.88em;background:var(--thumb);padding:1px 5px;border-radius:4px}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.count{margin-left:0}}
+</style>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">Asset discovery · Godot 4.6 · inspection only</div>
+  <h1>Heist Asset Ledger</h1>
+  <p class="lede">Every model and effect in <code>TheHeist.zip</code> (Synty POLYGON Heist, Godot port) and <code>ParticleFX.zip</code> (Synty Particle FX). Each one was imported, instantiated and rendered in Godot 4.6. Previews are real engine renders, not file-structure guesses.</p>
+  <div class="tally" id="tally"></div>
+</div></header>
+
+<nav class="tabs"><div class="wrap tabrow" role="tablist">
+  <button role="tab" id="t-models" aria-selected="true" data-view="models">Models</button>
+  <button role="tab" id="t-fx" aria-selected="false" data-view="fx">Particle FX</button>
+  <button role="tab" id="t-verify" aria-selected="false" data-view="verify">Godot verification</button>
+  <button role="tab" id="t-report" aria-selected="false" data-view="report">Report</button>
+</div></nav>
+
+<main class="wrap">
+<section class="view" id="v-models">
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search name, description or use…" aria-label="Search models">
+    <select id="fconf" aria-label="Confidence"><option value="">Any confidence</option><option>Confirmed</option><option>Probable</option></select>
+    <select id="fcomp" aria-label="Completeness"><option value="">Any completeness</option><option>Complete</option><option>Modular piece</option><option>Component</option></select>
+    <select id="fsort" aria-label="Sort"><option value="cat">Group by category</option><option value="name">Sort by name</option><option value="tris">Sort by triangles</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div id="grid"></div>
+</section>
+<section class="view" id="v-fx" hidden>
+  <p class="lede" style="padding-block:14px 16px">13 GPUParticles3D prefabs. They use built-in <code>ParticleProcessMaterial</code> and <code>StandardMaterial3D</code> only: no custom shaders, scripts, sounds or animation clips ship in either archive. The loops below were captured in Forward+.</p>
+  <div class="fxgrid" id="fxgrid"></div>
+</section>
+<section class="view" id="v-verify" hidden>
+  <p class="lede" style="padding-block:14px 16px">How the usability claims were checked: headless import, a script that loads and instantiates all 280 scenes, then renders in both renderers (Forward+ on Vulkan and Compatibility on OpenGL, both on Mesa software drivers), plus targeted functional tests.</p>
+  <div class="shots" id="shots"></div>
+</section>
+<section class="view report" id="v-report" hidden>__REPORT__</section>
+</main>
+
+<div class="sheet" id="sheet" hidden><div class="inner" role="dialog" aria-modal="true" aria-labelledby="d-name" id="sheetInner"></div></div>
+
+<script>
+const DATA = __DATA__;
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const M = DATA.models;
+const tris = M.reduce((a,m)=>a+m.tris,0);
+$("#tally").innerHTML = [
+  [M.length,"model prefabs"],[DATA.fx.length,"particle effects"],[M.filter(m=>m.status==="READY").length,"models READY"],
+  [DATA.fx.filter(f=>f.status==="READY").length+"/"+DATA.fx.length,"FX READY"],[9,"rigged characters"],[0,"animation clips"],[tris.toLocaleString(),"triangles total"]
+].map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("");
+
+const cats = [...new Set(M.map(m=>m.cat))].sort();
+let activeCat = "";
+function renderChips(){
+  const all = `<button class="chip" aria-pressed="${activeCat===""}" data-c="">All<small>${M.length}</small></button>`;
+  $("#chips").innerHTML = all + cats.map(c=>`<button class="chip" aria-pressed="${activeCat===c}" data-c="${esc(c)}">${esc(c)}<small>${M.filter(m=>m.cat===c).length}</small></button>`).join("");
+}
+$("#chips").addEventListener("click", e=>{const b=e.target.closest(".chip"); if(!b) return; activeCat=b.dataset.c; renderChips(); renderGrid();});
+
+function pills(m){
+  let p = `<span class="pill p-ready">${m.status}</span>`;
+  if(m.conf!=="Confirmed") p += `<span class="pill p-prob">${m.conf}</span>`;
+  if(m.skinned) p += `<span class="pill p-info">RIGGED</span>`;
+  if(m.subparts.length) p += `<span class="pill p-info">${m.subparts.length+1} PARTS</span>`;
+  return p;
+}
+function card(m,i){
+  return `<button class="card" data-i="${i}"><img loading="lazy" src="${m.img}" alt="${esc(m.rep)}"><div class="meta"><div class="nm">${esc(m.name)}</div><div class="rp">${esc(m.rep)}</div><div class="pills">${pills(m)}</div></div></button>`;
+}
+function renderGrid(){
+  const q = $("#q").value.trim().toLowerCase(), fc=$("#fconf").value, fp=$("#fcomp").value, s=$("#fsort").value;
+  let list = M.map((m,i)=>[m,i]).filter(([m])=>(!activeCat||m.cat===activeCat)&&(!fc||m.conf===fc)&&(!fp||m.comp===fp)&&(!q||(m.name+" "+m.rep+" "+m.use+" "+m.cat).toLowerCase().includes(q)));
+  $("#count").textContent = `${list.length} of ${M.length} shown`;
+  if(s==="cat"){
+    const groups = {}; list.forEach(x=>(groups[x[0].cat]=groups[x[0].cat]||[]).push(x));
+    $("#grid").innerHTML = Object.keys(groups).sort().map(g=>`<h2 class="group-h">${esc(g)}<span>${groups[g].length}</span></h2><div class="grid">${groups[g].map(([m,i])=>card(m,i)).join("")}</div>`).join("") || "<p>No models match these filters.</p>";
+  } else {
+    list.sort(s==="name"?(a,b)=>a[0].name.localeCompare(b[0].name):(a,b)=>b[0].tris-a[0].tris);
+    $("#grid").innerHTML = `<div class="grid">${list.map(([m,i])=>card(m,i)).join("")}</div>` + (list.length?"":"<p>No models match these filters.</p>");
+  }
+}
+["#q","#fconf","#fcomp","#fsort"].forEach(s=>$(s).addEventListener("input",renderGrid));
+$("#grid").addEventListener("click", e=>{const c=e.target.closest(".card"); if(c) openSheet(M[+c.dataset.i]);});
+
+function openSheet(m){
+  const kv = [
+    ["Category", m.cat],["Represents", m.rep],["Heist use", m.use],["Status", m.status+" (imported, instantiated and rendered in Godot 4.6, Forward+ and Compatibility)"],
+    ["Identification", m.conf+" (visual inspection of the render)"],["Completeness", m.comp],
+    ["Geometry", `${m.tris.toLocaleString()} tris · ${m.verts.toLocaleString()} verts · ${m.parts} mesh part${m.parts>1?"s":""}`],
+    ["Size (m)", m.dims? m.dims.join(" × ") : "n/a"],
+    ["Materials", m.mats.join(", ")||"none"],["Textures", m.texs.join(", ")||"vertex/flat colour only"],
+    ["Skeleton", m.skinned? `Yes: ${m.bones} bones`:"No"],["Animations", m.anims],
+    ["Collision", m.coll.join(", ")||"none"],["Sub-parts", m.subparts.join(", ")||"none"],["File", m.path]
+  ];
+  $("#sheetInner").innerHTML = `<button class="close" id="closeBtn">Close</button><img src="${m.img}" alt="${esc(m.rep)}"><h2 id="d-name">${esc(m.name)}</h2><p class="rp">${esc(m.rep)}</p><div class="pills">${pills(m)}</div><dl class="kv">${kv.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>${m.notes.map(n=>`<div class="note info">${esc(n)}</div>`).join("")}`;
+  $("#sheet").hidden = false; $("#closeBtn").focus();
+}
+function closeSheet(){ $("#sheet").hidden = true; }
+$("#sheet").addEventListener("click", e=>{ if(e.target.id==="sheet"||e.target.id==="closeBtn") closeSheet(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeSheet(); });
+
+$("#fxgrid").innerHTML = DATA.fx.map(f=>`<article class="fx"><img loading="lazy" src="${f.img}" alt="${esc(f.desc)}"><div class="meta"><div class="pills"><span class="pill ${f.status==="READY"?"p-ready":"p-conv"}">${f.status}</span><span class="pill p-info">${esc(f.cat)}</span>${f.animated?'<span class="pill p-info">LOOP</span>':'<span class="pill p-info">STILL</span>'}</div><h3>${esc(f.name)}</h3><p>${esc(f.desc)}</p><p class="use">${esc(f.use)}</p><div class="stats">${f.emitters} emitter${f.emitters>1?"s":""} · ${f.particles} particles · ${f.lifetime}s life · ${esc(f.draw.join(", "))}<br>${esc(f.textures.join(", ")||"no texture")}</div>${f.note?`<div class="note ${f.status==="READY"?"info":""}">${esc(f.note)}</div>`:""}</div></article>`).join("");
+$("#shots").innerHTML = DATA.scenes.map(s=>`<figure class="shot"><img loading="lazy" src="${s.img}" alt="${esc(s.title)}"><figcaption><b>${esc(s.title)}</b>${esc(s.desc)}</figcaption></figure>`).join("");
+
+const views = ["models","fx","verify","report"];
+function show(v){ if(!views.includes(v)) v="models";
+  views.forEach(x=>{ $("#v-"+x).hidden = x!==v; $("#t-"+x).setAttribute("aria-selected", x===v); }); }
+document.querySelector(".tabrow").addEventListener("click", e=>{const b=e.target.closest("button"); if(!b) return; location.hash=b.dataset.view; show(b.dataset.view);});
+window.addEventListener("hashchange", ()=>show(location.hash.slice(1)));
+renderChips(); renderGrid(); show(location.hash.slice(1));
+</script>
