@@ -242,3 +242,25 @@ Usage caveats (gameplay integration, not compatibility problems):
 - **Scripts:** `tools/retarget_bake.gd`, `anim_inspect.gd`, `anim_fidelity.gd`, `anim_direct_seam.gd`, `anim_reel.gd`.
 
 The Mixamo FBX files themselves were not modified.
+
+## 10. Animation showcase (playable)
+
+A playable inspection scene now lives in the Heist Godot project. `TheHeist.zip` was unpacked to `TheHeist/` and left otherwise as the pack ships, after Godot 4.6's first import. Open `TheHeist/project.godot` in Godot 4.6 and press Run; the scene is `res://Assets/Showcase/AnimationShowcase.tscn`. Controls and files are described in `TheHeist/Assets/Showcase/README.md`.
+
+**What you can do in it:**
+- Pick any of the nine Synty characters.
+- Play every baked clip from a panel grouped by category. Loops repeat; one-shots return to idle.
+- Pause, resume, replay, and set the speed from 0.1× to 2×.
+- Switch between in-place and root-motion playback for the four locomotion clips. Root motion is baked onto the Synty `Root` bone and applied through `AnimationMixer.root_motion_track`.
+- Orbit and zoom the camera. It follows the character's hips.
+
+**Automated check** (`tools/showcase_smoke_test.gd`, Forward+). All of the following passed:
+- All 11 clips play and move the skeleton.
+- The 4 one-shots (Button Pushing, Crouching, Opening, Picking Up Object) return to idle.
+- Pause holds the playhead, resume advances it, and replay restarts it.
+- The speed setting is applied.
+- Root motion moves the character, and the character stays in the camera frustum.
+- The toggle switches back to the in-place library.
+- Every clip plays on each of the nine characters.
+
+**Six requested clips were not in the repository.** `Female_Right Strafe`, `Female_Left Strafe`, `Female_Left Turn`, `Female_Right Turn`, `Female_Hit Reaction` and a new `Female_Carrying` are missing from every branch on GitHub. `Animations/Female/` still holds the original 11 files, including the original `Female_Carrying.fbx` (839,344 bytes). The bake tool (`tools/bake_animations.gd`) reads that folder directly, already has categories for strafes, turns and hit reactions, extracts turn heading onto `Root`, and checks a new Carrying file against the previous bake. It keeps both versions only if they differ by more than 2° on average. These paths will be exercised once the files are uploaded.

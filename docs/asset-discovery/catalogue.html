@@ -814,7 +814,24 @@ code{font-family:var(--mono);font-size:.88em;background:var(--thumb);padding:1px
 <li><strong>BoneMaps:</strong> <code>animation/synty_bonemap.tres</code> and <code>animation/mixamo_bonemap.tres</code>.</li>
 <li><strong>Scripts:</strong> <code>tools/retarget_bake.gd</code>, <code>anim_inspect.gd</code>, <code>anim_fidelity.gd</code>, <code>anim_direct_seam.gd</code>, <code>anim_reel.gd</code>.</li>
 </ul>
-<p>The Mixamo FBX files themselves were not modified.</p></section>
+<p>The Mixamo FBX files themselves were not modified.</p>
+<h2>10. Animation showcase (playable)</h2>
+<p>A playable inspection scene now lives in the Heist Godot project. <code>TheHeist.zip</code> was unpacked to <code>TheHeist/</code> and left otherwise as the pack ships, after Godot 4.6's first import. Open <code>TheHeist/project.godot</code> in Godot 4.6 and press Run; the scene is <code>res://Assets/Showcase/AnimationShowcase.tscn</code>. Controls and files are described in <code>TheHeist/Assets/Showcase/README.md</code>.</p>
+<p><strong>What you can do in it:</strong>
+- Pick any of the nine Synty characters.
+- Play every baked clip from a panel grouped by category. Loops repeat; one-shots return to idle.
+- Pause, resume, replay, and set the speed from 0.1× to 2×.
+- Switch between in-place and root-motion playback for the four locomotion clips. Root motion is baked onto the Synty <code>Root</code> bone and applied through <code>AnimationMixer.root_motion_track</code>.
+- Orbit and zoom the camera. It follows the character's hips.</p>
+<p><strong>Automated check</strong> (<code>tools/showcase_smoke_test.gd</code>, Forward+). All of the following passed:
+- All 11 clips play and move the skeleton.
+- The 4 one-shots (Button Pushing, Crouching, Opening, Picking Up Object) return to idle.
+- Pause holds the playhead, resume advances it, and replay restarts it.
+- The speed setting is applied.
+- Root motion moves the character, and the character stays in the camera frustum.
+- The toggle switches back to the in-place library.
+- Every clip plays on each of the nine characters.</p>
+<p><strong>Six requested clips were not in the repository.</strong> <code>Female_Right Strafe</code>, <code>Female_Left Strafe</code>, <code>Female_Left Turn</code>, <code>Female_Right Turn</code>, <code>Female_Hit Reaction</code> and a new <code>Female_Carrying</code> are missing from every branch on GitHub. <code>Animations/Female/</code> still holds the original 11 files, including the original <code>Female_Carrying.fbx</code> (839,344 bytes). The bake tool (<code>tools/bake_animations.gd</code>) reads that folder directly, already has categories for strafes, turns and hit reactions, extracts turn heading onto <code>Root</code>, and checks a new Carrying file against the previous bake. It keeps both versions only if they differ by more than 2° on average. These paths will be exercised once the files are uploaded.</p></section>
 </main>
 
 <div class="sheet" id="sheet" hidden><div class="inner" role="dialog" aria-modal="true" aria-labelledby="d-name" id="sheetInner"></div></div>
