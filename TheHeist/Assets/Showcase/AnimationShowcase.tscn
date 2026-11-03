@@ -1,0 +1,193 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Assets/Showcase/animation_showcase.gd" id="1_show"]
+[ext_resource type="Script" path="res://Assets/Showcase/orbit_camera.gd" id="2_cam"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Environment/SM_Env_Floor_01.tscn" id="3_floor"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Environment/SM_Env_VaultDoor_Frame_01.tscn" id="4_vault"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_SafeDepositBoxes_01.tscn" id="5_boxes"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_SafeDepositBoxes_Looted_01.tscn" id="6_looted"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_Sign_Money_Bank_01.tscn" id="7_sign"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Environment/SM_Env_Pillar_01.tscn" id="8_pillar"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_VaultTrolley_01.tscn" id="9_trolley"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_Money_Stack_01.tscn" id="10_money"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_Table_02.tscn" id="11_table"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_GoldBar_01.tscn" id="12_gold"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Items/SM_Item_DuffleBag_Open_Full_01.tscn" id="13_bag"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_Plant_01.tscn" id="14_plant"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_RopeBarrier_Pole_01.tscn" id="15_pole"]
+[ext_resource type="PackedScene" path="res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_RopeBarrier_01.tscn" id="16_rope"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
+sky_top_color = Color(0.16, 0.22, 0.33, 1)
+sky_horizon_color = Color(0.55, 0.58, 0.64, 1)
+ground_bottom_color = Color(0.09, 0.1, 0.12, 1)
+ground_horizon_color = Color(0.55, 0.58, 0.64, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("Sky_mat")
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.9
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_enabled = true
+ssao_radius = 1.2
+ssao_intensity = 1.6
+glow_enabled = true
+glow_intensity = 0.4
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.45, 0.48, 0.54, 1)
+fog_density = 0.012
+adjustment_enabled = true
+adjustment_contrast = 1.05
+adjustment_saturation = 1.08
+
+[sub_resource type="PlaneMesh" id="Ground_mesh"]
+size = Vector2(80, 80)
+
+[sub_resource type="StandardMaterial3D" id="Ground_mat"]
+albedo_color = Color(0.13, 0.14, 0.16, 1)
+roughness = 0.95
+
+[node name="AnimationShowcase" type="Node3D"]
+script = ExtResource("1_show")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.766044, -0.413176, 0.492404, 0, 0.766044, 0.642788, -0.642788, -0.492404, 0.586824, 0, 8, 0)
+light_color = Color(1, 0.95, 0.88, 1)
+light_energy = 1.25
+shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 40.0
+
+[node name="KeyLight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 6.5, 4)
+light_color = Color(1, 0.86, 0.66, 1)
+light_energy = 6.0
+shadow_enabled = true
+spot_range = 14.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.6
+
+[node name="RimLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.6, -3.2)
+light_color = Color(0.55, 0.7, 1, 1)
+light_energy = 1.8
+omni_range = 7.0
+
+[node name="Stage" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+mesh = SubResource("Ground_mesh")
+surface_material_override/0 = SubResource("Ground_mat")
+
+[node name="Floor_A" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -7.5)
+
+[node name="Floor_B" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -7.5)
+
+[node name="Floor_C" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -7.5)
+
+[node name="Floor_D" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -2.5)
+
+[node name="Floor_E" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2.5)
+
+[node name="Floor_F" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2.5)
+
+[node name="Floor_G" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 2.5)
+
+[node name="Floor_H" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 2.5)
+
+[node name="Floor_I" parent="Stage" instance=ExtResource("3_floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5)
+
+[node name="VaultDoor" parent="Stage" instance=ExtResource("4_vault")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -7.4)
+
+[node name="DepositBoxes_Left" parent="Stage" instance=ExtResource("5_boxes")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -7.4)
+
+[node name="DepositBoxes_Right" parent="Stage" instance=ExtResource("6_looted")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -7.4)
+
+[node name="Sign" parent="Stage" instance=ExtResource("7_sign")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 3.15, -7.3)
+
+[node name="Pillar_L" parent="Stage" instance=ExtResource("8_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -6.8)
+
+[node name="Pillar_R" parent="Stage" instance=ExtResource("8_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -6.8)
+
+[node name="Trolley" parent="Stage" instance=ExtResource("9_trolley")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -4.3, 0, -5.4)
+
+[node name="TrolleyMoney_1" parent="Stage" instance=ExtResource("10_money")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -4.3, 1.07, -5.4)
+
+[node name="Table" parent="Stage" instance=ExtResource("11_table")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.4, 0, -5.3)
+
+[node name="Gold_1" parent="Stage" instance=ExtResource("12_gold")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.0, 0.79, -5.4)
+
+[node name="Gold_2" parent="Stage" instance=ExtResource("12_gold")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.25, 0.79, -5.35)
+
+[node name="Gold_3" parent="Stage" instance=ExtResource("12_gold")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.12, 0.86, -5.38)
+
+[node name="Money_Table" parent="Stage" instance=ExtResource("10_money")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.9, 0.79, -5.1)
+
+[node name="DuffelBag" parent="Stage" instance=ExtResource("13_bag")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.4, 0, -5.6)
+
+[node name="Plant_L" parent="Stage" instance=ExtResource("14_plant")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6, 0, -5.8)
+
+[node name="Plant_R" parent="Stage" instance=ExtResource("14_plant")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6, 0, -5.8)
+
+[node name="Pole_1" parent="Stage" instance=ExtResource("15_pole")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0, -5.6)
+
+[node name="Pole_2" parent="Stage" instance=ExtResource("15_pole")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.6)
+
+[node name="Pole_3" parent="Stage" instance=ExtResource("15_pole")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0, -5.6)
+
+[node name="Rope_1" parent="Stage" instance=ExtResource("16_rope")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, -5.6)
+
+[node name="Rope_2" parent="Stage" instance=ExtResource("16_rope")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, -5.6)
+
+[node name="CharacterSpawn" type="Node3D" parent="."]
+
+[node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("2_cam")
+camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2)
+current = true
+fov = 50.0

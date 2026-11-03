@@ -1,0 +1,118 @@
+{
+  "changed": [],
+  "clips": [
+    {
+      "category": "Interaction",
+      "file": "Female_Button Pushing.fbx",
+      "has_root_motion": false,
+      "id": "button_pushing",
+      "length": 3.23333334922791,
+      "loops": false,
+      "travel_m": 0.00171581725589931,
+      "yaw_deg": 0.803742358815799
+    },
+    {
+      "category": "Interaction",
+      "file": "Female_Carrying.fbx",
+      "has_root_motion": false,
+      "id": "carrying",
+      "length": 10.0,
+      "loops": true,
+      "travel_m": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "category": "Stealth",
+      "file": "Female_Crouched Walking.fbx",
+      "has_root_motion": true,
+      "id": "crouched_walking",
+      "length": 1.03333330154419,
+      "loops": true,
+      "travel_m": 1.2368551492691,
+      "yaw_deg": 0.00110333555936213
+    },
+    {
+      "category": "Stealth",
+      "file": "Female_Crouching.fbx",
+      "has_root_motion": false,
+      "id": "crouching",
+      "length": 4.06666660308838,
+      "loops": false,
+      "travel_m": 0.0678151175379753,
+      "yaw_deg": 9.4908860948659
+    },
+    {
+      "category": "Combat",
+      "file": "Female_Firing Rifle.fbx",
+      "has_root_motion": false,
+      "id": "firing_rifle",
+      "length": 1.16666662693024,
+      "loops": true,
+      "travel_m": 0.000126590806758031,
+      "yaw_deg": 0.0139194506083917
+    },
+    {
+      "category": "Idle",
+      "file": "Female_Idle.fbx",
+      "has_root_motion": false,
+      "id": "idle",
+      "length": 16.6333332061768,
+      "loops": true,
+      "travel_m": 0.000001210098730553,
+      "yaw_deg": 0.00400768940628423
+    },
+    {
+      "category": "Interaction",
+      "file": "Female_Opening.fbx",
+      "has_root_motion": false,
+      "id": "opening",
+      "length": 5.23333311080933,
+      "loops": false,
+      "travel_m": 0.00138942152261734,
+      "yaw_deg": -0.481088057035427
+    },
+    {
+      "category": "Interaction",
+      "file": "Female_Picking Up Object.fbx",
+      "has_root_motion": false,
+      "id": "picking_up_object",
+      "length": 3.43333339691162,
+      "loops": false,
+      "travel_m": 0.043409526348114,
+      "yaw_deg": 2.30489984360162
+    },
+    {
+      "category": "Locomotion",
+      "file": "Female_Running.fbx",
+      "has_root_motion": true,
+      "id": "running",
+      "length": 0.699999988079071,
+      "loops": true,
+      "travel_m": 2.21749973297119,
+      "yaw_deg": -0.00000474439132449306
+    },
+    {
+      "category": "Stealth",
+      "file": "Female_Sneak Walk.fbx",
+      "has_root_motion": true,
+      "id": "sneak_walk",
+      "length": 0.899999976158142,
+      "loops": true,
+      "travel_m": 1.98388373851776,
+      "yaw_deg": 0.0
+    },
+    {
+      "category": "Locomotion",
+      "file": "Female_Walking.fbx",
+      "has_root_motion": true,
+      "id": "walking",
+      "length": 0.966666638851166,
+      "loops": true,
+      "travel_m": 1.36164236068726,
+      "yaw_deg": 0.000000840542716092629
+    }
+  ],
+  "duplicates": [],
+  "errors": [],
+  "source_folder": "/home/user/TheBotchedHeist/Animations/Female"
+}
