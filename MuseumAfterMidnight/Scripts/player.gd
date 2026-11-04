@@ -10,7 +10,7 @@ signal respawned
 
 const MODEL := "res://Assets/Synty/PolygonHeist/Prefab/Characters/SM_Chr_Female_Overall_01.tscn"
 const ANIMS := "res://Assets/Animations/heist_female_inplace.res"
-const GUN := "res://Assets/Synty/PolygonHeist/Prefab/Weapons/SM_Wep_PistolBandit_01.tscn"
+const GUN := "res://Assets/Synty/PolygonHeist/Prefab/Weapons/SM_Wep_RifleBandit_01.tscn"
 # Clip root speeds measured by the bake (m/s); playback speed follows movement speed.
 const WALK_CLIP_SPEED := 1.41
 const RUN_CLIP_SPEED := 3.17
@@ -44,6 +44,9 @@ var invulnerable := 0.0
 var spawn_xf := Transform3D()
 var _fire_cd := 0.0
 var _aim_timer := 0.0
+var _gun_fwd := Vector3.FORWARD   # current barrel direction (world, from the hands)
+var _hand_r := -1
+var _hand_l := -1
 var _flash: OmniLight3D
 var _flash_mesh: MeshInstance3D
 
@@ -61,7 +64,7 @@ func _ready() -> void:
 	aim = AimModifier.new()
 	skeleton.add_child(aim)
 	aim.setup(anim.get_animation("m/firing_rifle"))
-	aim.influence = 0.0
+	aim.influence = 1.0
 	_attach_gun()
 	_play("idle")
 	yaw = rotation.y
@@ -70,20 +73,24 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _attach_gun() -> void:
-	# The pistol is held in the right hand: barrel forward (+Z), grip down, as at rest pose.
-	var hand := skeleton.find_bone("Hand_R")
-	var att := BoneAttachment3D.new()
-	att.bone_name = "Hand_R"
-	skeleton.add_child(att)
+	# The crew rifle is carried in the "Firing Rifle" stance (AimModifier keeps it on the upper
+	# body at all times). Each frame it is placed in the right hand, barrel through the left.
+	_hand_r = skeleton.find_bone("Hand_R")
+	_hand_l = skeleton.find_bone("Hand_L")
 	gun = load(GUN).instantiate()
-	att.add_child(gun)
+	add_child(gun)
+	gun.top_level = true
 	for body in gun.find_children("*", "CollisionObject3D", true, false):
 		body.collision_layer = 0; body.collision_mask = 0
-	var rest := skeleton.get_bone_global_rest(hand)
-	gun.transform = rest.affine_inverse() * Transform3D(Basis(Vector3.UP, deg_to_rad(-12)), rest.origin + Vector3(-0.07, -0.04, 0.04))
+	var ab := AABB()
+	for mi in gun.find_children("*", "MeshInstance3D", true, false):
+		ab = ab.merge(mi.transform * mi.mesh.get_aabb()) if ab.size != Vector3.ZERO else mi.transform * mi.mesh.get_aabb()
+	aim.hand_r = _hand_r
+	aim.hand_l = _hand_l
+	aim.hands_posed.connect(_place_gun)
 	muzzle = Node3D.new()
 	gun.add_child(muzzle)
-	muzzle.position = Vector3(0, 0.05, 0.24)
+	muzzle.position = Vector3(0, ab.position.y + ab.size.y * 0.66, ab.end.z + 0.02)
 	_flash = OmniLight3D.new()
 	_flash.light_color = Color(1, 0.75, 0.35); _flash.light_energy = 0.0; _flash.omni_range = 4.0
 	muzzle.add_child(_flash)
@@ -126,16 +133,24 @@ func _physics_process(delta: float) -> void:
 	if active and Input.is_action_pressed("shoot") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and _fire_cd <= 0.0:
 		_shoot()
 	_aim_timer = maxf(_aim_timer - delta, 0.0)
-	aim.influence = move_toward(aim.influence, 1.0 if _aim_timer > 0.0 else 0.0, delta * 8.0)
+	aim.influence = move_toward(aim.influence, 0.0 if dead else 1.0, delta * 6.0)
 
 	if dead:
 		return
 	var flat := Vector2(velocity.x, velocity.z).length()
+	# Turn the body so the barrel (not the hips) points where we aim or move.
+	var desired := Vector3.ZERO
+	var rate := 12.0
 	if _aim_timer > 0.0:
-		# Face where the camera aims while shooting (the rifle stance turns the torso).
-		model.rotation.y = lerp_angle(model.rotation.y, yaw + PI + deg_to_rad(22), 1.0 - exp(-20.0 * delta))
+		desired = -camera.global_basis.z
+		rate = 22.0
 	elif dir.length() > 0.1:
-		model.rotation.y = lerp_angle(model.rotation.y, atan2(dir.x, dir.z), 1.0 - exp(-12.0 * delta))
+		desired = dir
+	desired.y = 0.0
+	var cur := Vector3(_gun_fwd.x, 0, _gun_fwd.z)
+	if desired.length() > 0.01 and cur.length() > 0.01:
+		var err := wrapf(atan2(desired.x, desired.z) - atan2(cur.x, cur.z), -PI, PI)
+		model.rotation.y += err * (1.0 - exp(-rate * delta))
 	if flat < 0.15:
 		_play("idle")
 		anim.speed_scale = 1.0
@@ -145,6 +160,22 @@ func _physics_process(delta: float) -> void:
 	else:
 		_play("walking")
 		anim.speed_scale = maxf(flat, 0.6) / WALK_CLIP_SPEED
+
+func _process(_delta: float) -> void:
+	gun.visible = aim.influence > 0.9 and not dead
+
+## Grip in the right hand, barrel through the left hand, upright to the body.
+func _place_gun(right: Transform3D, left: Transform3D) -> void:
+	var xf := skeleton.global_transform
+	var rh := xf * right.origin
+	var lh := xf * left.origin
+	var fwd := (lh - rh).normalized()
+	if fwd.length() < 0.5:
+		return
+	_gun_fwd = fwd
+	var up := model.global_basis.y
+	var b := Basis.looking_at(fwd, up, true)
+	gun.global_transform = Transform3D(b, rh + b * Vector3(0.0, -0.035, 0.03))
 
 func _shoot() -> void:
 	_fire_cd = FIRE_INTERVAL

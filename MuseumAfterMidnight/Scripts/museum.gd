@@ -158,9 +158,13 @@ func _box(size: Vector3, pos: Vector3, mat: Material, parent: Node, collide := t
 ## A converted Unity prefab on a stone plinth, with optional glass case, a spotlight and a placard.
 ## height: plinth height (0 = floor dais), size: largest dimension of the exhibit.
 func exhibit(prefab: String, pos: Vector3, yaw: float, size: float, plinth_h := 0.9, glass := false,
-		ceiling := ROOM_H, light_color := Color(1.0, 0.86, 0.68), title := "") -> Node3D:
+		ceiling := ROOM_H, light_color := Color(1.0, 0.86, 0.68), title := "", hide := "") -> Node3D:
 	var node := ExhibitFactory.build(prefab)
 	exhibits.add_child(node)
+	# Hide optional parts first so the plinth and collision match what is visible.
+	if hide != "":
+		for mi in node.find_children(hide, "MeshInstance3D", true, false):
+			mi.visible = false
 	node.rotation_degrees.y = yaw
 	var top := pos + Vector3(0, plinth_h, 0)
 	var ab := ExhibitFactory.fit(node, top, size)
@@ -169,14 +173,11 @@ func exhibit(prefab: String, pos: Vector3, yaw: float, size: float, plinth_h := 
 		_box(Vector3(foot.x, plinth_h - 0.04, foot.y), pos + Vector3(0, (plinth_h - 0.04) * 0.5, 0), _plinth_mat, exhibits)
 		_box(Vector3(foot.x + 0.06, 0.04, foot.y + 0.06), pos + Vector3(0, plinth_h - 0.02, 0), _brass_mat, exhibits, false)
 	else:
-		_box(Vector3(foot.x + 0.4, 0.12, foot.y + 0.4), pos + Vector3(0, 0.06, 0), _plinth_mat, exhibits)
+		_dais(Vector2(foot.x + 0.4, foot.y + 0.4), pos, 0.12)
 		node.position.y += 0.12
 		ab = ExhibitFactory.bounds(node)
 		if not ExhibitFactory.manifest()[prefab].character:
-			var sb := StaticBody3D.new(); node.add_child(sb)
-			var cs := CollisionShape3D.new(); var sh := BoxShape3D.new()
-			sh.size = ab.size / node.scale; cs.shape = sh
-			cs.position = node.to_local(ab.get_center()); sb.add_child(cs)
+			_mesh_collision(node)
 	if glass:
 		var c := _inst(ExhibitFactory.CASE, exhibits, top)
 		c.scale = Vector3((ab.size.x + 0.2) / 0.56, (ab.size.y + 0.15) / 0.51, (ab.size.z + 0.2) / 0.56)
@@ -192,6 +193,35 @@ func exhibit(prefab: String, pos: Vector3, yaw: float, size: float, plinth_h := 
 		lbl.position = pos + front * (foot.y * 0.5 + 0.35) + Vector3(0, 0.13, 0)
 		lbl.rotation_degrees.x = -70
 	return node
+
+## A low display plate the player can walk onto: box visual, collision with 17-degree ramps.
+func _dais(size: Vector2, pos: Vector3, h: float) -> void:
+	var mi := _box(Vector3(size.x, h, size.y), pos + Vector3(0, h * 0.5, 0), _plinth_mat, exhibits, false)
+	var sb := StaticBody3D.new(); exhibits.add_child(sb)
+	sb.position = pos
+	var ramp := h / tan(deg_to_rad(17.0))
+	var hx := size.x * 0.5; var hz := size.y * 0.5
+	var pts := PackedVector3Array()
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			pts.append(Vector3(sx * (hx + ramp), 0.0, sz * (hz + ramp)))
+			pts.append(Vector3(sx * hx, h, sz * hz))
+	var sh := ConvexPolygonShape3D.new(); sh.points = pts
+	var cs := CollisionShape3D.new(); cs.shape = sh
+	sb.add_child(cs)
+
+## Collision that follows the exhibit's visible meshes instead of its bounding box.
+func _mesh_collision(node: Node3D) -> void:
+	for mi in node.find_children("*", "MeshInstance3D", true, false):
+		if not mi.is_visible_in_tree() or mi.mesh == null or mi.skin != null:
+			continue
+		# Thin parts (oars, ropes, sails) stay walk-through instead of forming fences.
+		var n := str(mi.name).to_lower()
+		if n.contains("oar") or n.contains("rope") or n.contains("sail"):
+			continue
+		var sb := StaticBody3D.new(); mi.add_child(sb)
+		var cs := CollisionShape3D.new(); cs.shape = mi.mesh.create_trimesh_shape()
+		sb.add_child(cs)
 
 ## Hangs a flat exhibit on a wall. normal: direction the wall faces (into the room).
 func wall_exhibit(prefab: String, wall_point: Vector3, normal: Vector3, size: float, flip := false,
@@ -282,16 +312,14 @@ func _exit_sign(pos: Vector3, yaw: float) -> void:
 
 func _hall_exhibits() -> void:
 	# Centrepiece: Viking longship on a low dais behind ropes.
-	var ship := exhibit("SM_Veh_Boat_01", Vector3(0, 0, -0.8), 90, 8.5, 0.0, false, HALL_H, Color(0.9, 0.9, 1.0), "Viking Longship")
-	# Show the sail furled so the hall title stays readable from the entrance.
-	for mi in ship.find_children("*Sail_Open*", "MeshInstance3D", true, false):
-		mi.visible = false
+	# Sail shown furled so the hall title stays readable from the entrance.
+	exhibit("SM_Veh_Boat_01", Vector3(0, 0, -0.8), 90, 8.5, 0.0, false, HALL_H, Color(0.9, 0.9, 1.0), "Viking Longship", "*Sail_Open*")
 	_spot(Vector3(4.5, HALL_H - 0.3, 3.0), Vector3(0, 1.0, -0.8), Color(1.0, 0.82, 0.6), 7.0, 30.0, "shadow_med")
 	ropes([Vector3(-5, 0, 1.8), Vector3(-1.7, 0, 2.6), Vector3(1.7, 0, 2.6), Vector3(5, 0, 1.8)])
 	exhibit("SM_Chr_Chief_01_Brown", Vector3(-7.6, 0, -2.4), 70, 1.85, 0.0, false, HALL_H)
 	exhibit("SM_Chr_Shieldmadien_Brown", Vector3(7.6, 0, -2.4), -70, 1.85, 0.0, false, HALL_H)
-	exhibit("SM_Env_Stone_Statue_01", Vector3(-3.2, 0, -6.2), 0, 1.9, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Rune Stone")
-	exhibit("SM_Prop_Rock_Totem_01", Vector3(3.2, 0, -6.2), 0, 1.7, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Stone Totem")
+	exhibit("SM_Env_Stone_Statue_01", Vector3(-3.2, 0, -6.6), 0, 1.9, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Rune Stone")
+	exhibit("SM_Prop_Rock_Totem_01", Vector3(3.2, 0, -6.6), 0, 1.7, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Stone Totem")
 	exhibit("SM_Wep_LargeAxe_01", Vector3(-6.5, 0, 1.8), 30, 0.9, 1.0, true, HALL_H)
 	exhibit("SM_Wep_Horn_01", Vector3(6.5, 0, 1.8), -30, 0.55, 1.0, true, HALL_H, Color(1.0, 0.86, 0.68), "Drinking Horn")
 	exhibit("SM_Prop_Chest_01", Vector3(-3.5, 0, 5.0), 180, 1.0, 0.45, false, HALL_H, Color(1.0, 0.86, 0.68), "Iron-bound Chest")
