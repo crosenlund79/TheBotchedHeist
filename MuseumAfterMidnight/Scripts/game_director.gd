@@ -71,7 +71,10 @@ func _next_round() -> void:
 	hud.show_message("ROUND %d" % round_num, 2.0)
 	var points := SPAWNS.duplicate()
 	points.shuffle()
-	points.sort_custom(func(a, b): return a.distance_to(player.global_position) > b.distance_to(player.global_position))
+	# Never spawn right next to the player: keep points at least 9 m away when there are enough.
+	var far: Array = points.filter(func(q): return q.distance_to(player.global_position) > 9.0)
+	if far.size() >= 3:
+		points = far
 	alive = 0
 	for i in count:
 		var data: Dictionary = ROSTER[(i + round_num) % ROSTER.size()]
