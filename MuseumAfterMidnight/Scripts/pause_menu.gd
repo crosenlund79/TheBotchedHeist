@@ -187,7 +187,7 @@ func _build_main(root: Control) -> Control:
 	var story := UI.label("You are the night guard. The doors locked at midnight - and the exhibits woke up.", 15, UI.DIM, v, false)
 	story.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	story.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var play := UI.button("▶  PLAY", v, _play)
+	var play := UI.button("PLAY", v, _play)
 	play.add_theme_font_size_override("font_size", 24)
 	UI.header("DIFFICULTY", v)
 	var row := UI.hbox(v)

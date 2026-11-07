@@ -313,11 +313,11 @@ func _build_terminal() -> void:
 	_term_clips.custom_minimum_size = Vector2(0, 34)
 	var ctr := UI.hbox(mid, 6)
 	ctr.add_theme_font_size_override("font_size", 15)
-	UI.button("|◀ Clip", ctr, func():
+	UI.button("|< Clip", ctr, func():
 		var own: Array = clips.filter(func(c): return c.cam == _term_cam)
 		if own.size() > 0 and not term.live: term.seek(own[-1].t0))
 	UI.button("-5s", ctr, func(): if not term.live: term.seek(term.t - 5.0))
-	_term_play = UI.button("❚❚  Pause", ctr, func():
+	_term_play = UI.button("Pause", ctr, func():
 		if term.live: return
 		if not term.playing and term.t >= term.t_end - 0.05: term.seek(term.t_start)
 		term.playing = not term.playing)
@@ -325,12 +325,12 @@ func _build_terminal() -> void:
 	_term_speed = UI.button("Speed 1x", ctr, func():
 		_speed_i = (_speed_i + 1) % SPEEDS.size()
 		term.speed = SPEEDS[_speed_i])
-	UI.button("◀◀ Rewind", ctr, func():
+	UI.button("<< Rewind", ctr, func():
 		if not term.live:
 			term.speed = -2.0
 			term.playing = true)
 	UI.spacer(ctr)
-	UI.button("● LIVE", ctr, _go_live)
+	UI.button("LIVE", ctr, _go_live)
 	# Right column: museum status, alarm, statistics, event log.
 	var right := UI.vbox(cols, 8)
 	right.custom_minimum_size = Vector2(270, 0)
@@ -353,7 +353,7 @@ func _rebuild_cam_list() -> void:
 		c.queue_free()
 	for cam in cameras():
 		var n: int = clips.filter(func(c): return c.cam == cam).size()
-		var tag := ("● REC" if cam.recording else "○ LIVE") + ("  ·  %d clip%s" % [n, "" if n == 1 else "s"] if cam.recording else "")
+		var tag := ("REC" if cam.recording else "LIVE") + ("  ·  %d clip%s" % [n, "" if n == 1 else "s"] if cam.recording else "")
 		var b := UI.button("%s\n%s" % [cam.camera_name, tag], _term_cam_list, _select_cam.bind(cam))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 
@@ -377,7 +377,7 @@ func _update_terminal() -> void:
 	var lost: bool = term.signal_lost()
 	_term_view.material.set_shader_parameter("static_amt", 1.0 if lost else 0.0)
 	if term.live:
-		_term_mode.text = "● LIVE"
+		_term_mode.text = "LIVE"
 		_term_stamp.text = format_clock(_t) + ("    NO SIGNAL" if lost else "")
 		_term_caption.text = ""
 		_slider_lock = true
@@ -386,7 +386,7 @@ func _update_terminal() -> void:
 		_term_slider.value = 1
 		_slider_lock = false
 	else:
-		_term_mode.text = ("▶ PLAYBACK" if term.playing else "❚❚ PAUSED") + "  %sx" % str(term.speed)
+		_term_mode.text = ("PLAYBACK" if term.playing else "PAUSED") + "  %sx" % str(term.speed)
 		_term_stamp.text = format_clock(term.t) + ("    NO SIGNAL" if lost else "")
 		_slider_lock = true
 		_term_slider.min_value = term.t_start
@@ -396,9 +396,9 @@ func _update_terminal() -> void:
 		var cap := ""
 		for e in events:
 			if e.t <= term.t and e.t > term.t - 3.0 and _term_cam and (_term_cam.covers(e.pos) or e.type in ["blackout", "alarm"]):
-				cap = "⚠ " + e.text
+				cap = "! " + e.text
 		_term_caption.text = cap
-	_term_play.text = "❚❚  Pause" if term.playing else "▶  Play"
+	_term_play.text = "Pause" if term.playing else "Play"
 	_term_speed.text = "Speed %sx" % str(SPEEDS[_speed_i])
 	if director:
 		_term_status.text = director.status_text()

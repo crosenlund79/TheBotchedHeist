@@ -269,7 +269,7 @@ func damage_flash(amount: float) -> void:
 func set_ammo(weapon_name: String, mag: int, mag_size: int, reserve: int) -> void:
 	_weapon.text = weapon_name.to_upper() + "     [1] Rifle  [2] Handgun"
 	_ammo.text = str(mag)
-	_reserve.text = " / ∞" if reserve < 0 else " / %d" % reserve
+	_reserve.text = " / unlimited" if reserve < 0 else " / %d" % reserve
 	var low := mag <= mag_size / 4
 	_ammo.add_theme_color_override("font_color", UI.RED if low else UI.TEXT)
 	if mag == 0 and reserve == 0:

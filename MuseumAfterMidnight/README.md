@@ -1,135 +1,89 @@
-# Museum After Midnight
+# Museum After Midnight: The Museum Awakens
 
-A lightweight **haunted-museum shooter** built from Synty assets in **Godot 4.6** (Forward+). Explore the museum after dark, shoot the Horror Mansion monsters roaming the galleries, clear the museum and survive the next, slightly harder round. The Heist experiment in `../TheHeist` is untouched.
+A third-person supernatural action game built in **Godot 4.6** from the Synty POLYGON packs:
+Heist, Generic, Horror Mansion, Vikings, Samurai, Western, Sci-Fi City and Particle FX. You play
+the night guard, locked in after closing, while the exhibits wake up. The `../TheHeist` project
+and the animation showcase are untouched.
 
 ## Run it
 
-Open `MuseumAfterMidnight/project.godot` in Godot 4.6 or newer and press **Run** (F5). The first import takes about a minute. The main scene is `res://Scenes/Museum.tscn`.
+Open `MuseumAfterMidnight/project.godot` in Godot 4.6 and press **Run** (F5). The first import
+takes about a minute. The main scene is `res://Scenes/Museum.tscn`.
+
+From a terminal:
+
+```bash
+godot --path MuseumAfterMidnight
+```
+
+A Web export preset (Compatibility renderer, single-threaded) is included:
+
+```bash
+godot --headless --path MuseumAfterMidnight --export-release "Web" build/index.html
+```
 
 ## Controls
 
+You can remap these under **Settings → Controls**.
+
 | Input | Action |
 |---|---|
-| W A S D | Move |
-| Shift | Run |
-| Mouse | Look and aim (crosshair at screen centre; click to recapture the mouse) |
-| Left mouse button | Shoot (hold for automatic fire) |
-| Esc | Menu: resume, graphics preset, quit |
+| W A S D | Move (strafe / walk backward while aiming) |
+| Shift | Sprint |
+| C / Ctrl | Crouch (toggle) |
+| Mouse | Look |
+| Right mouse | Aim (over-the-shoulder) |
+| Left mouse | Fire (rifle: automatic; handgun: semi-automatic) |
+| R | Reload |
+| 1 / 2 | Rifle / handgun |
+| E | Interact (plaques, pickups, terminal, alarm, relics) |
+| F | Weapon flashlight |
+| V | Swap shoulder |
+| Esc | Pause menu |
+| F1 | Developer overlay |
 
-## What's in it
+## Zones
 
-- **Entrance hall (20 × 15 m, 6 m high):**
-  - glass facade onto a night street, with a parked police car's lights flashing outside;
-  - skylights with a moonbeam;
-  - a Viking longship centrepiece behind rope barriers, Viking figures, rune stones, shields and classical statues.
-- **Four galleries off the hall:**
-  - **Samurai**: warrior, ninja and geisha figures; temple bell; guardian lions; weapons in glass cases; paper lanterns.
-  - **House of Horrors**: the Count and the Witch, a coffin, an anatomy skeleton, portraits, a crystal ball and a grandfather clock.
-  - **The Wild West**: stagecoach, sheriff and cowgirl, saloon piano, firearms in cases, saloon signs.
-  - **Future City**: hover bike, cop, robot and hacker figures, drones, neon signs, a vending machine.
-- **Every exhibit:**
-  - a stone plinth with a brass edge, or a low dais;
-  - a spotlight;
-  - a placard naming the object and its Synty pack;
-  - small objects sit in Synty glass display cases.
-- **Animated figures:** all costumed figures play the idle clip from the Heist Mixamo pipeline. The Synty rig is shared across packs, so no new retargeting was needed.
-- **Player:** a Synty Heist character (`SM_Chr_Female_Overall_01`) with the baked Mixamo idle, walk and run clips. Movement speed matches the clips' measured root speed, so the feet don't slide.
+| Zone | Purpose |
+|---|---|
+| Main Hall · Viking Wing | Longship (walk all the way round), Stone Totem, Rune Stone, sacrificial altar, spear and shield, classical statues, reception desk, museum directory |
+| Samurai Gallery | Figures, temple bell (ring it to lure monsters), weapons in cases |
+| Occult Exhibition | Count and Witch, crystal ball (seance encounter), paintings that change, rocking chair, ritual candle circle, mirror |
+| The Crypt | Coffins, caged skeleton, chandeliers, chains; the most dangerous zone |
+| Wild West / Future City | The original galleries |
+| Ancient Civilizations Wing | Sarcophagus of the Nameless King (cursed), tomb guardian, ceremonial masks, coin hoard, temple gold, burial jars, torches |
+| Storage & Maintenance | Shelving and crate aisles, hiding nook, red emergency lighting, ammo and first aid |
+| Security Office | CCTV terminal, live monitor wall, alarm button, status board, supplies; enemies never spawn here |
 
-## Haunted museum
+## Enemies
 
-- **The Crypt:** a new 20 × 10 m room behind the Samurai and Horror galleries, through doors marked "THE CRYPT".
-  - Coffins under a flickering chandelier, a swaying skeleton in a cage, specimen jars, a bird cage and an exorcist cross.
-  - Candle stands with flames, hanging chains, skulls, barrels and crates, and spider webs in the corners.
-  - Built from Horror Mansion and Generic assets.
-- **Atmosphere:**
-  - flickering lamps, candles and the chandelier, with irregular dips and drop-outs;
-  - cold green ambient light and denser fog (volumetric on High);
-  - spider webs in the hall and the Horror gallery.
+- **Possessed Exhibit:** a figure or classical statue that stands dormant until it wakes (you get close, you shoot it, a haunting event or a relic). Figures walk slowly and hit hard. Stone statues move only while you are not looking at them.
+- **Haunted Staff:** night staff in Heist outfits. They patrol, investigate noise, alert, chase, attack, stagger when shot, lose sight of you, search and return to their route.
+- **Supernatural Entity:** a translucent ghost. It hovers, phases (short teleport) and telegraphs its lunge with a rising glow and a shriek. It is briefly untouchable while phasing.
+- **Nightmare Beast:** a fast, tough Horror Mansion monster that appears in later rounds.
 
-## Monsters and combat
+Each round has a finite roster. Some enemies start the round, others arrive during it, and
+relics can add a capped number of extra enemies. When every one is destroyed, a summary appears
+and the next round starts on a countdown.
 
-- **Monsters:** Horror Mansion characters: Werewolf, Demon (with tail), Ghoul, Witch, Butcher, Yokai, Gimp and the Count.
-  - Each has its own health, speed, damage and glowing eyes.
-  - They animate with the baked Mixamo clips from the Heist pipeline: idle, walk/sneak to wander, run to chase, a lunging strike, and kneel-and-sink on death.
-- **AI:**
-  - idle and wander near their spawn point;
-  - notice you by line of sight or when you fire nearby;
-  - chase you through doorways along a navigation mesh baked at startup from the museum's collision;
-  - attack in melee.
-- **Gun:** the Heist pistol in the player's right hand.
-  - Shots go through the crosshair; the arms raise into an aim pose (an upper-body overlay of the "Firing Rifle" clip) while firing.
-  - Effects: muzzle flash and light, tracer, impact sparks, blood-red hits on monsters, a hit marker (red for headshots, which do double damage) and a procedural gunshot sound.
-- **Health:** 100. Monster hits flash the screen red.
-  - At zero: "YOU DIED", a kneeling death, then respawn at the entrance with full health and 2.5 s of invulnerability.
-- **Rounds:**
-  - the HUD shows the round and remaining monsters;
-  - when all are dead, "MUSEUM CLEARED!" appears and the next round starts after 5 s;
-  - each round adds one monster (6 → 10) and raises monster health and damage by 10 % and speed by 4 %, capped at round 6.
+## CCTV
 
-Sounds are synthesised in code (gunshot, hits, growls, deaths), because the Synty packs contain no audio.
+There are six cameras: four record (blinking red light) and two are live-only (green light).
+Every 0.1 s the game snapshots the player, enemies and camera-only phantoms into one 90-second
+buffer, along with timestamped events.
 
-## Security cameras
-
-There are two ceiling cameras (Synty Heist CCTV prop with a blinking red light), in the **Wild West** and **Future City** galleries.
-- While you are inside a camera's gallery, it records your position, facing and animation state 30 times a second.
-- About a second after you leave, the view cuts to that camera's fixed viewpoint.
-- It replays the last 3–5 seconds with a ghost copy of your character.
-- The overlay shows a blinking `● REC`, a date and time stamp, the camera name and a playback countdown.
-- Gameplay then resumes automatically. Monsters freeze and the combat HUD hides during a replay.
-
-No video is encoded; the replay re-enacts the recorded transforms.
+- **Replay:** a short picture-in-picture replay plays after you leave a recording camera's area.
+- **Terminal:** the Security Office terminal plays back any camera with play/pause, ±5 s, rewind, speed and a scrub timeline. It also shows clip markers, museum status, alarm controls and an event log.
+- **How playback works:** playback rebuilds puppets on their own render layer and never touches gameplay.
+- **Ghost reveals:** phantoms from the "ghost silhouette" event are invisible to the player but appear on the recordings.
 
 ## Graphics presets
 
-The preset applies immediately from the Esc menu, defaults to **Low**, and is saved in `user://settings.cfg`.
+Low (the default) is laptop-friendly. Medium adds shadows, SSAO, glow and live office monitors.
+High adds MSAA, SSIL, SSR and volumetric fog. Change it under Settings → Graphics or from the
+pause menu.
 
-| | Low (laptop) | Medium | High |
-|---|---|---|---|
-| 3D resolution | 67 % (FSR 1) | 85 % (FSR 1) | 100 % |
-| Anti-aliasing | FXAA | FXAA | MSAA 4× |
-| Shadows | none | key lights (moon, centrepieces, street), 2048 atlas | all exhibit spotlights, 4096 atlas, soft high |
-| Effects | fog only; decorative fill lights off | + SSAO, glow, fill lights | + SSAO high, SSIL, SSR, volumetric fog |
+## Tools
 
-## Imported Synty assets
-
-**Godot-native (copied from the Heist project):**
-- POLYGON Heist: building kit (walls, floors, ceilings, skylights, pillars, glass facade, street), display cases, rope barriers, plants, CCTV prop, police car, and the player character.
-- Particle FX: dust motes, sun beam, candle flame.
-- The baked Mixamo animation library from `TheHeist/Assets/Showcase`.
-
-**Converted from `ModelProject/SyntyUnity.zip` (Unity packs):** 104 prefabs, 100 FBX files, 26 materials and 22 textures.
-
-| Pack | Prefabs | Characters |
-|---|---:|---:|
-| Western | 14 | 2 |
-| Samurai | 15 | 3 |
-| Vikings | 13 | 2 |
-| Horror Mansion | 35 | 8 |
-| Sci-Fi City | 15 | 3 |
-| Generic | 12 | 1 |
-
-`Tools/convert_synty_unity.py` did the conversion; it runs outside Godot against the extracted zip:
-- it parses each Unity prefab, including nested prefabs and inactive objects;
-- it resolves meshes and materials through Unity GUIDs;
-- it converts Synty's `Generic_Basic` and Standard materials to `StandardMaterial3D` (albedo, tint, alpha clip, multiplied emission, glass);
-- it copies only the files needed;
-- it writes `Assets/Imported/imported_manifest.json`.
-
-`Scripts/exhibit_factory.gd` then builds each prefab in Godot:
-- it shows only the meshes the prefab shows and applies its materials;
-- it merges character attachments onto the body's skeleton, or onto the head bone for rigid ones;
-- it adds the idle animation.
-
-To change the selection, edit `SELECTION` in the converter and re-run it:
-
-```bash
-python3 Tools/convert_synty_unity.py <extracted SyntyUnity.zip>/Synty
-```
-
-## Known limitations
-
-- The Unity FBX files reference Synty's local `.psd` texture paths, so the first import prints texture-not-found messages. They are harmless; the converted materials supply the textures.
-- Figures from the five 49-bone Unity rigs animate with relaxed fingers: their finger bones have no `_L`/`_R` names, so those tracks are skipped.
-- Synty's special shaders (Horror grunge, Sci-Fi triplanar) aren't recreated; the converted materials use the base palette textures.
-- This is a prototype: there are no audio files (sounds are procedural), and no collision on wall-hung pieces.
-- Monsters use the female Mixamo clips; their attack is a sped-up section of "Button Pushing", since no attack or hit-reaction clips exist yet.
+- `Tools/convert_synty_unity.py`: converts the selected Unity prefabs into `Assets/Imported/` and updates the manifest.
+- `Assets/Generated/template_*.png`: generated effect sprites (muzzle flash, sparks, bullet hole, dust, wisp, static). Replace any of them with art of the same name to override it.

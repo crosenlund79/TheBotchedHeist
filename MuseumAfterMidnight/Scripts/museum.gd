@@ -340,7 +340,7 @@ func _build_hall() -> void:
 	_label("HOUSE  OF  HORRORS", Vector3(2.5, 4.62, -7.5 + WALL_T + 0.02), 0, 54)
 	_label("THE  WILD  WEST", Vector3(-10 + WALL_T + 0.02, 4.62, 0), 90, 60)
 	_label("FUTURE  CITY", Vector3(10 - WALL_T - 0.02, 4.62, 0), -90, 60)
-	_label("SECURITY  OFFICE  ›", Vector3(12.5, 3.05, -7.5 + WALL_T + 0.02), 0, 40, Color(0.7, 0.85, 1.0))
+	_label("SECURITY  OFFICE  >", Vector3(12.5, 3.05, -7.5 + WALL_T + 0.02), 0, 40, Color(0.7, 0.85, 1.0))
 	_exit_sign(Vector3(0, 3.35, 7.5 - WALL_T - 0.03), 180)
 	for p in [Vector3(-9.2, 0, 6.6), Vector3(9.2, 0, 6.6), Vector3(-9.2, 0, -6.6), Vector3(9.2, 0, -6.6)]:
 		_inst(H + "Props/SM_Prop_Plant_01.tscn", arch, p, randf() * 360.0, Vector3(1.3, 1.3, 1.3))
@@ -827,7 +827,7 @@ func _interactions() -> void:
 	board_mat.albedo_color = Color(0.08, 0.08, 0.1)
 	_box(Vector3(1.6, 1.1, 0.08), Vector3(-6.8, 1.45, 6.6), board_mat, exhibits, true)
 	_box(Vector3(0.1, 0.9, 0.1), Vector3(-6.8, 0.45, 6.6), _brass_mat, exhibits, true)
-	var dir_text := "MUSEUM  DIRECTORY\n\n‹ West:  Wild West Gallery\n› East:  Future City · Security Office\n▲ North:  Samurai · Occult Exhibition\n      Ancient Civilizations · Crypt\n      Storage (staff only)"
+	var dir_text := "MUSEUM  DIRECTORY\n\n< West:  Wild West Gallery\n> East:  Future City · Security Office\n^ North:  Samurai · Occult Exhibition\n      Ancient Civilizations · Crypt\n      Storage (staff only)"
 	var l := _label(dir_text, Vector3(-6.8, 1.45, 6.6 - 0.05), 180, 22, Color(0.92, 0.85, 0.65))
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	Interactable.make(exhibits, Vector3(-6.8, 1.0, 6.0), "Read museum directory", func(_p, _i):
