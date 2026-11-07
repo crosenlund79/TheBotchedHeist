@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/pause_menu.gd" id="4_menu"]
 [ext_resource type="Script" path="res://Scripts/game_director.gd" id="5_director"]
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="6_hud"]
+[ext_resource type="Script" path="res://Scripts/dev_overlay.gd" id="7_dev"]
 
 [sub_resource type="ProceduralSkyMaterial" id="NightSky"]
 sky_top_color = Color(0.015, 0.02, 0.05, 1)
@@ -66,3 +67,6 @@ script = ExtResource("5_director")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("6_hud")
+
+[node name="DevOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("7_dev")

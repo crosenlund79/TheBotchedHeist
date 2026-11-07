@@ -1,6 +1,9 @@
 extends Node3D
-## Builds the museum at startup: architecture from the Synty Heist building kit,
-## five themed galleries of converted Synty Unity assets, lighting and two security cameras.
+## Builds the museum at startup: architecture from the Synty Heist building kit, themed galleries
+## of converted Synty Unity assets (main hall with the Viking longship, Samurai, Wild West, Future
+## City, Occult exhibition, Crypt, Ancient Civilizations wing, Storage/Maintenance and the Security
+## Office), lighting, interactions, pickups, possessable exhibits and six security cameras.
+## Also answers zone / surface queries for footsteps, the haunting director and the round manager.
 
 const H := "res://Assets/Synty/PolygonHeist/Prefab/"
 const FX := "res://Assets/ParticleFX/Prefabs/FX/"
@@ -16,6 +19,21 @@ var _tinted := {}
 var _plinth_mat: StandardMaterial3D
 var _brass_mat: StandardMaterial3D
 var _flicker: Array = []   # [light, base_energy, phase]
+var zones: Array = []                 # {name, rect, surface, danger, points}
+var possessable: Array = []           # {node, prefab, pos, yaw, size, title, statue, front}
+var cases: Array = []                 # glass display cases that can shatter: {node, pos}
+var paintings: Array = []             # wall paintings (painting-change event)
+var classical_statues: Array = []     # statues that can turn to face the player
+var pickups: Array = []               # Interactable pickups, restored every round
+var relics := {}                      # cursed relic name -> Interactable
+var emergency_lights: Array = []
+var monitor_screens: Array = []       # MeshInstance3D quads in the security office
+var status_board: Label3D
+var totem: Node3D
+var longship: Node3D
+var crystal_ball: Node3D
+var cameras: Array = []
+var _last_case: Node3D
 
 func _ready() -> void:
 	arch = _group("Architecture"); exhibits = _group("Exhibits"); lights = _group("Lights")
@@ -23,20 +41,34 @@ func _ready() -> void:
 	_plinth_mat.albedo_color = Color(0.11, 0.11, 0.13); _plinth_mat.roughness = 0.35
 	_brass_mat = StandardMaterial3D.new()
 	_brass_mat.albedo_color = Color(0.78, 0.6, 0.3); _brass_mat.metallic = 0.85; _brass_mat.roughness = 0.3
+	add_to_group("museum")
+	_define_zones()
 	_build_hall()
-	_build_room("Samurai", Rect2(-10, -17.5, 10, 10), Color(0.30, 0.36, 0.30), Color(0.55, 0.42, 0.32), {"S": [1], "N": [1]})
-	_build_room("Horror", Rect2(0, -17.5, 10, 10), Color(0.34, 0.18, 0.20), Color(0.35, 0.22, 0.24), {"S": [0], "N": [0]})
-	_build_room("Crypt", Rect2(-10, -27.5, 20, 10), Color(0.20, 0.23, 0.22), Color(0.30, 0.32, 0.30), {"S": [1, 2]})
+	_build_room("Samurai", Rect2(-10, -17.5, 10, 10), Color(0.30, 0.36, 0.30), Color(0.55, 0.42, 0.32), {"S": [1], "N": [1], "W": [1]})
+	_build_room("Horror", Rect2(0, -17.5, 10, 10), Color(0.34, 0.18, 0.20), Color(0.35, 0.22, 0.24), {"S": [0], "N": [0], "E": [1]})
+	_build_room("Crypt", Rect2(-10, -27.5, 20, 10), Color(0.20, 0.23, 0.22), Color(0.30, 0.32, 0.30), {"S": [1, 2], "W": [1]})
 	_build_room("Western", Rect2(-20, -7.5, 10, 15), Color(0.62, 0.50, 0.36), Color(0.62, 0.42, 0.28), {"E": [1]})
-	_build_room("SciFi", Rect2(10, -7.5, 10, 15), Color(0.20, 0.24, 0.34), Color(0.30, 0.34, 0.42), {"W": [1]})
+	_build_room("SciFi", Rect2(10, -7.5, 10, 15), Color(0.20, 0.24, 0.34), Color(0.30, 0.34, 0.42), {"W": [1], "N": [0]})
+	_build_room("Ancient", Rect2(-20, -17.5, 10, 10), Color(0.64, 0.53, 0.36), Color(0.70, 0.58, 0.42), {"E": [1], "N": [0]})
+	_build_room("Storage", Rect2(-20, -27.5, 10, 10), Color(0.30, 0.31, 0.33), Color(0.42, 0.42, 0.44), {"S": [0], "E": [1]})
+	_build_room("Office", Rect2(10, -17.5, 10, 10), Color(0.38, 0.42, 0.46), Color(0.32, 0.34, 0.38), {"S": [0], "W": [1]})
 	_hall_exhibits()
 	_samurai_exhibits()
 	_horror_exhibits()
 	_western_exhibits()
 	_scifi_exhibits()
+	_ancient_wing()
+	_storage_room()
+	_security_office()
+	_viking_additions()
+	_occult_additions()
 	_outside()
 	_crypt()
 	_haunt_existing_rooms()
+	_interactions()
+	_emergency_lighting()
+	_nav_blocker(Vector3(0, 1.0, -0.8), Vector3(8.6, 2.0, 2.6))
+	_nav_blocker(Vector3(-14.8, 1.0, -0.6), Vector3(5.2, 2.0, 2.4))
 	_security_cameras()
 	GameSettings.apply()
 	$Director.start(self)
@@ -159,8 +191,13 @@ func _box(size: Vector3, pos: Vector3, mat: Material, parent: Node, collide := t
 ## height: plinth height (0 = floor dais), size: largest dimension of the exhibit.
 func exhibit(prefab: String, pos: Vector3, yaw: float, size: float, plinth_h := 0.9, glass := false,
 		ceiling := ROOM_H, light_color := Color(1.0, 0.86, 0.68), title := "", hide := "") -> Node3D:
-	var node := ExhibitFactory.build(prefab)
+	var heist := prefab.begins_with("res://")
+	var node: Node3D = load(prefab).instantiate() if heist else ExhibitFactory.build(prefab)
 	exhibits.add_child(node)
+	if heist:
+		for body in node.find_children("*", "CollisionObject3D", true, false):
+			body.queue_free()
+	var is_char: bool = not heist and ExhibitFactory.manifest()[prefab].character
 	# Hide optional parts first so the plinth and collision match what is visible.
 	if hide != "":
 		for mi in node.find_children(hide, "MeshInstance3D", true, false):
@@ -176,18 +213,30 @@ func exhibit(prefab: String, pos: Vector3, yaw: float, size: float, plinth_h := 
 		_dais(Vector2(foot.x + 0.4, foot.y + 0.4), pos, 0.12)
 		node.position.y += 0.12
 		ab = ExhibitFactory.bounds(node)
-		if not ExhibitFactory.manifest()[prefab].character:
+		if not is_char:
 			_mesh_collision(node)
+	_last_case = null
 	if glass:
 		var c := _inst(ExhibitFactory.CASE, exhibits, top)
 		c.scale = Vector3((ab.size.x + 0.2) / 0.56, (ab.size.y + 0.15) / 0.51, (ab.size.z + 0.2) / 0.56)
+		_last_case = c
+		cases.append({"node": c, "pos": top + Vector3(0, ab.size.y * 0.5, 0), "exhibit": node})
 	var reach := maxf(ab.size.x, ab.size.z)
 	_spot(Vector3(pos.x, ceiling - 0.15, pos.z) + Vector3(0.4, 0, 0.6), ab.get_center(), light_color,
 		2.6 + reach * 0.9, clampf(14.0 + reach * 9.0, 18.0, 55.0))
 	var front := Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1)
-	var pack: String = ExhibitFactory.manifest()[prefab].pack
+	var pack: String = "Heist" if heist else ExhibitFactory.manifest()[prefab].pack
+	var name_text: String = title if title != "" else ExhibitFactory.title_of(prefab.get_file().get_basename())
+	if is_char:
+		possessable.append({"node": node, "prefab": prefab, "pos": pos, "yaw": yaw, "size": size, "title": name_text,
+			"statue": false, "front": front})
+	elif prefab.begins_with("SM_Gen_Prop_Statue") and plinth_h > 0.05:
+		possessable.append({"node": node, "prefab": prefab, "pos": pos + front * (foot.y * 0.5 + 0.7), "yaw": yaw, "size": 1.9,
+			"title": name_text, "statue": true, "front": front})
+		classical_statues.append(node)
+	_add_plaque(name_text, pos + front * (foot.y * 0.5 + 0.5), node)
 	var label_h := plinth_h * 0.62 if plinth_h > 0.05 else 0.4
-	var lbl := _label("%s\n[ Synty Polygon %s ]" % [title if title != "" else ExhibitFactory.title_of(prefab), pack],
+	var lbl := _label("%s\n[ Synty Polygon %s ]" % [name_text, pack],
 		pos + front * (foot.y * 0.5 + 0.21 * (0.0 if plinth_h > 0.05 else 1.0) + 0.012) + Vector3(0, label_h, 0), yaw, 24)
 	if plinth_h <= 0.05:
 		lbl.position = pos + front * (foot.y * 0.5 + 0.35) + Vector3(0, 0.13, 0)
@@ -291,6 +340,7 @@ func _build_hall() -> void:
 	_label("HOUSE  OF  HORRORS", Vector3(2.5, 4.62, -7.5 + WALL_T + 0.02), 0, 54)
 	_label("THE  WILD  WEST", Vector3(-10 + WALL_T + 0.02, 4.62, 0), 90, 60)
 	_label("FUTURE  CITY", Vector3(10 - WALL_T - 0.02, 4.62, 0), -90, 60)
+	_label("SECURITY  OFFICE  ›", Vector3(12.5, 3.05, -7.5 + WALL_T + 0.02), 0, 40, Color(0.7, 0.85, 1.0))
 	_exit_sign(Vector3(0, 3.35, 7.5 - WALL_T - 0.03), 180)
 	for p in [Vector3(-9.2, 0, 6.6), Vector3(9.2, 0, 6.6), Vector3(-9.2, 0, -6.6), Vector3(9.2, 0, -6.6)]:
 		_inst(H + "Props/SM_Prop_Plant_01.tscn", arch, p, randf() * 360.0, Vector3(1.3, 1.3, 1.3))
@@ -313,13 +363,13 @@ func _exit_sign(pos: Vector3, yaw: float) -> void:
 func _hall_exhibits() -> void:
 	# Centrepiece: Viking longship on a low dais behind ropes.
 	# Sail shown furled so the hall title stays readable from the entrance.
-	exhibit("SM_Veh_Boat_01", Vector3(0, 0, -0.8), 90, 8.5, 0.0, false, HALL_H, Color(0.9, 0.9, 1.0), "Viking Longship", "*Sail_Open*")
+	longship = exhibit("SM_Veh_Boat_01", Vector3(0, 0, -0.8), 90, 8.5, 0.0, false, HALL_H, Color(0.9, 0.9, 1.0), "Viking Longship", "*Sail_Open*")
 	_spot(Vector3(4.5, HALL_H - 0.3, 3.0), Vector3(0, 1.0, -0.8), Color(1.0, 0.82, 0.6), 7.0, 30.0, "shadow_med")
 	ropes([Vector3(-5, 0, 1.8), Vector3(-1.7, 0, 2.6), Vector3(1.7, 0, 2.6), Vector3(5, 0, 1.8)])
 	exhibit("SM_Chr_Chief_01_Brown", Vector3(-7.6, 0, -2.4), 70, 1.85, 0.0, false, HALL_H)
 	exhibit("SM_Chr_Shieldmadien_Brown", Vector3(7.6, 0, -2.4), -70, 1.85, 0.0, false, HALL_H)
 	exhibit("SM_Env_Stone_Statue_01", Vector3(-3.2, 0, -6.6), 0, 1.9, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Rune Stone")
-	exhibit("SM_Prop_Rock_Totem_01", Vector3(3.2, 0, -6.6), 0, 1.7, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Stone Totem")
+	totem = exhibit("SM_Prop_Rock_Totem_01", Vector3(3.2, 0, -6.6), 0, 1.7, 0.5, false, HALL_H, Color(0.8, 0.85, 1.0), "Stone Totem")
 	exhibit("SM_Wep_LargeAxe_01", Vector3(-6.5, 0, 1.8), 30, 0.9, 1.0, true, HALL_H)
 	exhibit("SM_Wep_Horn_01", Vector3(6.5, 0, 1.8), -30, 0.55, 1.0, true, HALL_H, Color(1.0, 0.86, 0.68), "Drinking Horn")
 	exhibit("SM_Prop_Chest_01", Vector3(-3.5, 0, 5.0), 180, 1.0, 0.45, false, HALL_H, Color(1.0, 0.86, 0.68), "Iron-bound Chest")
@@ -349,12 +399,11 @@ func _samurai_exhibits() -> void:
 	exhibit("SM_Prop_Statue_Lion_01", c + Vector3(-1.6, 0, 3.4), 20, 1.0, 0.7)
 	exhibit("SM_Prop_Statue_Lion_02", c + Vector3(1.6, 0, 3.4), -20, 1.0, 0.7)
 	exhibit("SM_Wep_Odachi_01", c + Vector3(-4.0, 0, -1.2), 90, 1.4, 0.9, true)
-	exhibit("SM_Wep_Naginata_01", c + Vector3(-4.0, 0, 1.4), 90, 1.6, 0.9, true)
+	exhibit("SM_Wep_Naginata_01", c + Vector3(-2.6, 0, 1.6), 90, 1.6, 0.9, true)
 	exhibit("SM_Wep_Ninjato_01", c + Vector3(4.0, 0, -1.2), -90, 0.9, 0.9, true)
 	exhibit("SM_Wep_Sai_01", c + Vector3(4.0, 0, 1.4), -90, 0.5, 1.0, true)
 	exhibit("SM_Prop_WarriorShoulderArmor", c + Vector3(-2.6, 0, -0.8), 30, 0.6, 1.0, true, ROOM_H, Color(1.0, 0.86, 0.68), "Shoulder Armour")
 	exhibit("SM_Prop_Bonsai_01", c + Vector3(2.6, 0, -0.8), -30, 0.8, 0.8)
-	exhibit("SM_Prop_Stone_Lantern_01", c + Vector3(-4.1, 0, 4.0), 45, 1.3, 0.0)
 	exhibit("SM_Prop_Zen_Lantern_01", c + Vector3(4.1, 0, 4.0), -45, 1.0, 0.0)
 	for p in [c + Vector3(-2.5, ROOM_H - 0.9, 1.5), c + Vector3(2.5, ROOM_H - 0.9, 1.5), c + Vector3(0, ROOM_H - 0.9, -1.8)]:
 		var lantern := ExhibitFactory.build("SM_Prop_Paper_Lantern_01")
@@ -367,29 +416,29 @@ func _horror_exhibits() -> void:
 	exhibit("SM_Prop_Coffin_01", c + Vector3(0, 0, 0.3), 0, 2.1, 0.45, false, ROOM_H, Color(0.75, 0.6, 1.0))
 	exhibit("SM_Chr_Count_01", c + Vector3(0.6, 0, -3.5), 15, 1.95, 0.0, false, ROOM_H, Color(0.8, 0.5, 0.9), "The Count")
 	exhibit("SM_Chr_Witch_01", c + Vector3(2.6, 0, -3.5), -15, 1.9, 0.0, false, ROOM_H, Color(0.6, 1.0, 0.6), "The Witch")
-	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(3.8, 0, 3.6), -135, 1.8, 0.0, false, ROOM_H, Color(0.85, 0.9, 1.0), "Anatomy Skeleton")
+	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(2.5, 0, 4.2), 180, 1.8, 0.0, false, ROOM_H, Color(0.85, 0.9, 1.0), "Anatomy Skeleton")
 	exhibit("SM_Prop_Gramophone_01", c + Vector3(-3.8, 0, -1.0), 90, 0.75, 0.9)
-	exhibit("SM_Prop_Crystal_Ball_01", c + Vector3(-3.8, 0, 1.6), 90, 0.4, 1.0, true, ROOM_H, Color(0.7, 0.6, 1.0))
+	crystal_ball = exhibit("SM_Prop_Crystal_Ball_01", c + Vector3(-3.8, 0, 1.6), 90, 0.4, 1.0, true, ROOM_H, Color(0.7, 0.6, 1.0))
 	exhibit("SM_Prop_Mask_Count_01", c + Vector3(3.8, 0, -1.0), -90, 0.4, 1.1, true)
-	exhibit("SM_Prop_Book_Open_01", c + Vector3(3.8, 0, 1.0), -90, 0.5, 1.0, true, ROOM_H, Color(1.0, 0.86, 0.68), "Grimoire")
+	exhibit("SM_Prop_Book_Open_01", c + Vector3(3.8, 0, -2.8), -90, 0.5, 1.0, true, ROOM_H, Color(1.0, 0.86, 0.68), "Grimoire")
 	exhibit("SM_Prop_Clock_01", c + Vector3(-4.3, 0, 4.2), 45, 2.2, 0.0, false, ROOM_H, Color(1.0, 0.86, 0.68), "Grandfather Clock")
 	exhibit("SM_Prop_Chest_01", c + Vector3(-1.6, 0, 3.6), 0, 0.9, 0.4)
-	var lamp := exhibit("SM_Prop_Lamp_01", c + Vector3(1.6, 0, 3.6), 0, 0.6, 0.9, false, ROOM_H, Color(1.0, 0.7, 0.4), "Oil Lamp")
+	var lamp := exhibit("SM_Prop_Lamp_01", c + Vector3(0.3, 0, 3.9), 0, 0.6, 0.9, false, ROOM_H, Color(1.0, 0.7, 0.4), "Oil Lamp")
 	_flick(_omni(ExhibitFactory.bounds(lamp).get_center() + Vector3(0, 0.15, 0), Color(1.0, 0.55, 0.25), 0.9, 3.5))
 	var flame := _inst(FX + "FX_Candle_Flame_01.tscn", lights, ExhibitFactory.bounds(lamp).end - Vector3(ExhibitFactory.bounds(lamp).size.x * 0.5, 0.02, ExhibitFactory.bounds(lamp).size.z * 0.5))
 	flame.scale = Vector3(0.6, 0.6, 0.6)
 	var paints := ["SM_Prop_Painting_01", "SM_Prop_Painting_02", "SM_Prop_Painting_03", "SM_Prop_Painting_04"]
-	wall_exhibit(paints[0], c + Vector3(-5 + WALL_T, 1.8, -1.6), Vector3(1, 0, 0), 1.3)
-	wall_exhibit(paints[1], c + Vector3(-5 + WALL_T, 1.8, 1.8), Vector3(1, 0, 0), 1.3)
-	wall_exhibit(paints[2], c + Vector3(5 - WALL_T, 1.8, -1.6), Vector3(-1, 0, 0), 1.3)
-	wall_exhibit(paints[3], c + Vector3(5 - WALL_T, 1.8, 1.8), Vector3(-1, 0, 0), 1.3)
+	paintings.append(wall_exhibit(paints[0], c + Vector3(-5 + WALL_T, 1.8, -1.6), Vector3(1, 0, 0), 1.3))
+	paintings.append(wall_exhibit(paints[1], c + Vector3(-5 + WALL_T, 1.8, 1.8), Vector3(1, 0, 0), 1.3))
+	paintings.append(wall_exhibit(paints[2], c + Vector3(5 - WALL_T, 1.8, -1.6), Vector3(-1, 0, 0), 1.3))
+	wall_exhibit(paints[3], c + Vector3(5 - WALL_T, 1.8, -3.4), Vector3(-1, 0, 0), 1.0)
 	wall_exhibit("SM_Prop_Mirror_01", c + Vector3(0, 1.8, -5 + WALL_T), Vector3(0, 0, 1), 1.2)
 	_omni(c + Vector3(0, 2.4, 0), Color(0.55, 0.3, 0.8), 0.9, 8.0, "detail_light")
 
 func _western_exhibits() -> void:
 	var c := Vector3(-15, 0, 0)
 	exhibit("SM_Veh_Stagecoach_01", c + Vector3(0.2, 0, -0.6), 90, 5.2, 0.0, false, ROOM_H, Color(1.0, 0.8, 0.55), "Stagecoach")
-	ropes([c + Vector3(-2.6, 0, 2.4), c + Vector3(0, 0, 2.9), c + Vector3(2.6, 0, 2.4)])
+	ropes([c + Vector3(-1.8, 0, 2.4), c + Vector3(0, 0, 2.9), c + Vector3(1.8, 0, 2.4)])   # gaps at both ends stay walkable for enemies
 	exhibit("SM_Chr_Sheriff_01", c + Vector3(-3.4, 0, -5.6), 20, 1.85, 0.0)
 	exhibit("SM_Chr_Cowgirl_01", c + Vector3(-1.8, 0, -6.0), 10, 1.75, 0.0)
 	exhibit("SM_Prop_Piano_01", c + Vector3(3.2, 0, -5.6), -20, 1.6, 0.0, false, ROOM_H, Color(1.0, 0.8, 0.55), "Saloon Piano")
@@ -409,9 +458,9 @@ func _western_exhibits() -> void:
 func _scifi_exhibits() -> void:
 	var c := Vector3(15, 0, 0)
 	exhibit("SM_Veh_Hover_Bike_01", c + Vector3(0, 0, -0.6), -90, 2.6, 0.3, false, ROOM_H, Color(0.6, 0.85, 1.0), "Hover Bike")
-	exhibit("SM_Chr_Cop_01", c + Vector3(-1.7, 0, -5.8), 0, 1.85, 0.0, false, ROOM_H, Color(0.6, 0.85, 1.0))
-	exhibit("SM_Chr_Robot_01", c + Vector3(0, 0, -6.1), 0, 1.9, 0.0, false, ROOM_H, Color(0.6, 0.85, 1.0))
-	exhibit("SM_Chr_Hacker_Female_01", c + Vector3(1.7, 0, -5.8), 0, 1.75, 0.0, false, ROOM_H, Color(1.0, 0.5, 0.9))
+	exhibit("SM_Chr_Cop_01", c + Vector3(0.6, 0, -5.8), 0, 1.85, 0.0, false, ROOM_H, Color(0.6, 0.85, 1.0))
+	exhibit("SM_Chr_Robot_01", c + Vector3(2.2, 0, -6.1), 0, 1.9, 0.0, false, ROOM_H, Color(0.6, 0.85, 1.0))
+	exhibit("SM_Chr_Hacker_Female_01", c + Vector3(3.8, 0, -5.8), 0, 1.75, 0.0, false, ROOM_H, Color(1.0, 0.5, 0.9))
 	exhibit("SM_Prop_Drone_01", c + Vector3(-3.9, 0, -2.4), -90, 0.6, 1.0, true, ROOM_H, Color(0.6, 0.85, 1.0))
 	exhibit("SM_Prop_Drone_Quad_01", c + Vector3(-3.9, 0, 0.0), -90, 0.6, 1.0, true, ROOM_H, Color(0.6, 0.85, 1.0))
 	exhibit("SM_Prop_Drone_Ball_01", c + Vector3(-3.9, 0, 2.4), -90, 0.45, 1.0, true, ROOM_H, Color(0.6, 0.85, 1.0))
@@ -478,18 +527,18 @@ func _crypt() -> void:
 	_flick(_omni(ExhibitFactory.bounds(chand).get_center() + Vector3(0, -0.4, 0), Color(1.0, 0.6, 0.3), 1.6, 8.0))
 	# A caged skeleton that sways eerily, specimen jars and a bird cage.
 	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(-7.6, 0, -2.8), 35, 1.8, 0.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Prisoner")
-	dress("SM_Prop_Cage_01", c + Vector3(-7.6, 0.12, -2.8), 35, 2.4)
-	exhibit("SM_Prop_Specimen_Jar_01", c + Vector3(-9.0, 0, 1.2), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
-	exhibit("SM_Prop_Specimen_Jar_02", c + Vector3(-9.0, 0, 3.4), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
+	_solid(dress("SM_Prop_Cage_01", c + Vector3(-7.6, 0.12, -2.8), 35, 2.4))
+	exhibit("SM_Prop_Specimen_Jar_01", c + Vector3(-9.0, 0, 0.6), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
+	exhibit("SM_Prop_Specimen_Jar_02", c + Vector3(-9.0, 0, 4.4), 90, 0.55, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Specimen")
 	exhibit("SM_Prop_Bird_Cage_01", c + Vector3(9.0, 0, 1.2), -90, 0.7, 1.0, false, ROOM_H, Color(0.55, 1.0, 0.7), "Empty Cage")
 	exhibit("SM_Gen_Prop_Skull_01", c + Vector3(9.0, 0, 3.4), -90, 0.35, 1.05, true, ROOM_H, Color(0.55, 1.0, 0.7), "Skull")
 	wall_exhibit("SM_Prop_Exorcist_Cross_01", c + Vector3(0, 1.9, -5 + WALL_T), Vector3(0, 0, 1), 1.3)
 	# Dressing: barrels and crates piled in the corners, chains, skulls, candles, webs.
-	dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(8.8, 0, -3.9), 0, 1.0)
-	dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(7.8, 0, -4.1), 40, 1.0)
-	dress("SM_Gen_Prop_Crate_01", c + Vector3(8.7, 0, -2.6), 15, 0.9)
-	dress("SM_Gen_Prop_Chest_02", c + Vector3(-8.6, 0, 4.0), 80, 0.9)
-	dress("SM_Gen_Prop_Crate_01", c + Vector3(6.0, 0, 4.2), -20, 0.8)
+	_solid(dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(8.8, 0, -3.9), 0, 1.0))
+	_solid(dress("SM_Gen_Prop_Barrel_Wood_01", c + Vector3(7.8, 0, -4.1), 40, 1.0))
+	_solid(dress("SM_Gen_Prop_Crate_01", c + Vector3(8.7, 0, -2.6), 15, 0.9))
+	_solid(dress("SM_Gen_Prop_Chest_02", c + Vector3(-6.4, 0, 4.2), 80, 0.9))
+	_solid(dress("SM_Gen_Prop_Crate_01", c + Vector3(6.0, 0, 4.2), -20, 0.8))
 	for x in [-5.2, -0.6, 4.4, 7.4]:
 		hang("SM_Gen_Prop_Chain_01", c + Vector3(x, 0, -3.6 + fmod(absf(x), 2.0)), 1.4)
 	for s in [Vector3(-2.2, 0, 2.9), Vector3(3.1, 0, 2.6), Vector3(-0.4, 0, 3.6)]:
@@ -520,19 +569,383 @@ func _outside() -> void:
 	_spot(Vector3(4, 6.5, 14), Vector3(2, 0, 4), Color(0.55, 0.65, 0.95), 3.0, 40.0, "shadow_med", 20.0)
 	_omni(Vector3(8, 4.5, 13), Color(1.0, 0.75, 0.45), 1.5, 9.0)
 
+const LORE := {
+	"Viking Longship": "Clinker-built oak warship, 9th century. Recovered from a burial mound with its crew's belongings still aboard. Night staff report hearing oars.",
+	"Stone Totem": "Carved boundary stone. Its runes are a warning, not a prayer. Do not touch after closing.",
+	"Rune Stone": "Memorial stone raised for a chieftain 'who did not stay in his grave'.",
+	"Sacrificial Altar": "Norse offering table. Traces of something dark were found in the grooves.",
+	"Sarcophagus of the Nameless King": "Sealed limestone coffin. Every attempt to read the name on the lid has failed. The seal looks... recent.",
+	"Tomb Guardian": "Skeletal guardian found standing upright at the tomb entrance, facing inwards.",
+	"Crystal Ball": "Seance crystal from a Victorian medium. Said to show whoever gazes into it something standing behind them.",
+	"Grandfather Clock": "Stopped at 3:07 in 1891. Occasionally it is heard chiming anyway.",
+	"Temple Bell": "Bronze temple bell. Ringing it carries through the whole museum - something will come to listen.",
+	"Stagecoach": "Wells-style coach, 1870s. Its last passengers never reached their stop.",
+	"Hover Bike": "Concept vehicle from the Future City exhibition. Do not sit on the exhibits.",
+	"Gramophone": "Wind-up gramophone with a single record nobody remembers donating.",
+	"Sealed Coffin": "Iron-banded coffin from the crypt. The bands were added later, from the inside.",
+	"Classical Statue": "Marble figure after a Greek original. Visitors swear its head was turned the other way yesterday.",
+	"Ceremonial Mask": "Funerary mask. Worn by priests to speak with the dead.",
+	"Bust of a Forgotten King": "Portrait bust with its name chiselled away.",
+	"Hoard of Coins": "Silver hoard buried under a threshold - an offering to keep something out.",
+}
+
+func _add_plaque(title: String, pos: Vector3, _node: Node3D) -> void:
+	if not LORE.has(title):
+		return
+	var t := title
+	Interactable.make(exhibits, pos + Vector3(0, 0.9, 0), "Read plaque: " + title,
+		func(_p, _i): _hud_call("show_info", [t, LORE[t]]), 1.6, "plaque")
+
+func _hud_call(method: String, args: Array) -> void:
+	var hud := get_node_or_null("HUD")
+	if hud and hud.has_method(method):
+		hud.callv(method, args)
+
+func _director() -> Node:
+	return get_node_or_null("Director")
+
+## Box collision fitted to a dressing prop's visible bounds (crates, shelves, barrels).
+func _solid(node: Node3D, surface := "") -> Node3D:
+	var ab := ExhibitFactory.bounds(node)
+	var sb := StaticBody3D.new()
+	exhibits.add_child(sb)
+	sb.position = ab.get_center()
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = ab.size
+	cs.shape = bs
+	sb.add_child(cs)
+	if surface != "":
+		sb.set_meta("surface", surface)
+	return node
+
+# ------------------------------------------------------------------ zones
+
+func _define_zones() -> void:
+	zones = [
+		{"name": "Main Hall · Viking Wing", "rect": Rect2(-10, -7.5, 20, 15), "surface": "stone", "danger": 0.2,
+			"points": [Vector3(-7, 0, -5.8), Vector3(7, 0, -5.8), Vector3(-7.8, 0, 0.5), Vector3(7.8, 0, 0.5), Vector3(-2.5, 0, 4.0), Vector3(2.5, 0, 4.0), Vector3(0, 0, -4.2)]},
+		{"name": "Samurai Gallery", "rect": Rect2(-10, -17.5, 10, 10), "surface": "wood", "danger": 0.35,
+			"points": [Vector3(-5, 0, -9.0), Vector3(-6.5, 0, -14.0), Vector3(-3.0, 0, -14.5), Vector3(-8.0, 0, -10.0)]},
+		{"name": "Occult Exhibition", "rect": Rect2(0, -17.5, 10, 10), "surface": "wood", "danger": 0.8,
+			"points": [Vector3(5, 0, -9.0), Vector3(2.5, 0, -14.0), Vector3(7.5, 0, -14.0), Vector3(8.0, 0, -10.0)]},
+		{"name": "The Crypt", "rect": Rect2(-10, -27.5, 20, 10), "surface": "stone", "danger": 0.9,
+			"points": [Vector3(-5, 0, -20.0), Vector3(5, 0, -20.0), Vector3(0, 0, -25.5), Vector3(-6.5, 0, -24.5), Vector3(6.5, 0, -24.0)]},
+		{"name": "Wild West Gallery", "rect": Rect2(-20, -7.5, 10, 15), "surface": "wood", "danger": 0.3,
+			"points": [Vector3(-15, 0, 3.5), Vector3(-17.5, 0, -3.5), Vector3(-12.5, 0, -3.5), Vector3(-15, 0, 6.5)]},
+		{"name": "Future City Gallery", "rect": Rect2(10, -7.5, 10, 15), "surface": "metal", "danger": 0.3,
+			"points": [Vector3(15, 0, 2.5), Vector3(12.5, 0, -3.5), Vector3(17.0, 0, -3.0), Vector3(13.0, 0, 6.0)]},
+		{"name": "Ancient Civilizations Wing", "rect": Rect2(-20, -17.5, 10, 10), "surface": "stone", "danger": 0.55,
+			"points": [Vector3(-15, 0, -9.0), Vector3(-17.5, 0, -15.0), Vector3(-12.5, 0, -15.5), Vector3(-12.0, 0, -10.5)]},
+		{"name": "Storage & Maintenance", "rect": Rect2(-20, -27.5, 10, 10), "surface": "metal", "danger": 0.65,
+			"points": [Vector3(-17.0, 0, -19.0), Vector3(-12.0, 0, -20.5), Vector3(-15.0, 0, -25.8), Vector3(-18.5, 0, -22.5)]},
+		{"name": "Security Office", "rect": Rect2(10, -17.5, 10, 10), "surface": "stone", "danger": 0.1,
+			"points": [Vector3(13.0, 0, -9.5), Vector3(16.0, 0, -13.5), Vector3(12.0, 0, -14.5)]},
+	]
+
+func zone_at(pos: Vector3) -> Dictionary:
+	for z in zones:
+		if (z.rect as Rect2).has_point(Vector2(pos.x, pos.z)):
+			return z
+	return {}
+
+func zone_name(pos: Vector3) -> String:
+	var z := zone_at(pos)
+	return z.name if not z.is_empty() else "Outside"
+
+## Footstep / impact surface under a position.
+func surface_at(pos: Vector3) -> String:
+	if pos.y > 0.06 and absf(pos.x) < 4.8 and pos.z > -3.0 and pos.z < 1.4:
+		return "wood"     # longship deck and dais
+	var z := zone_at(pos)
+	return z.surface if not z.is_empty() else "stone"
+
+## Lights in a zone (for flicker / blackout events).
+func lights_in(rect: Rect2) -> Array:
+	var out := []
+	for l in get_tree().get_nodes_in_group("preset_light"):
+		if l is Light3D and l.is_inside_tree() and rect.grow(0.2).has_point(Vector2(l.global_position.x, l.global_position.z)) \
+				and not l.is_in_group("emergency_light") and l.get_parent() == lights:
+			out.append(l)
+	return out
+
+# ------------------------------------------------------------------ new wings
+
+func _ancient_wing() -> void:
+	var c := Vector3(-15, 0, -12.5)
+	var r := Rect2(-20, -17.5, 10, 10)
+	var sand := Color(1.0, 0.82, 0.55)
+	_label("ANCIENT  CIVILIZATIONS", Vector3(-15, 2.95, -7.5 - WALL_T - 0.02), 180, 44, Color(0.95, 0.8, 0.5))
+	exhibit("SM_Prop_Coffin_02", c + Vector3(0.6, 0, -0.4), 90, 2.2, 0.0, false, ROOM_H, sand, "Sarcophagus of the Nameless King")
+	exhibit("SM_Gen_Chr_Skeleton_01", c + Vector3(-3.8, 0, 1.0), 90, 1.8, 0.0, false, ROOM_H, Color(0.9, 0.75, 0.5), "Tomb Guardian")
+	exhibit("SM_Gen_Prop_Statue_04", c + Vector3(3.8, 0, -3.0), -90, 1.5, 0.6, false, ROOM_H, sand, "Classical Statue")
+	exhibit("SM_Prop_Ornamental_Head_01", c + Vector3(3.9, 0, -0.8), -90, 0.5, 1.05, false, ROOM_H, sand, "Bust of a Forgotten King")
+	exhibit("SM_Prop_Mask_01", c + Vector3(1.6, 0, -4.0), 0, 0.35, 1.1, true, ROOM_H, sand, "Ceremonial Mask")
+	exhibit("SM_Prop_Mask_02", c + Vector3(-3.9, 0, -1.4), 90, 0.35, 1.1, true, ROOM_H, sand, "Ceremonial Mask")
+	exhibit("SM_Gen_Prop_Coin_Pile_01", c + Vector3(-2.0, 0, -2.6), 0, 0.5, 1.0, true, ROOM_H, sand, "Hoard of Coins")
+	exhibit("SM_Prop_Pot_02", c + Vector3(-1.6, 0, 3.9), 180, 0.7, 0.45, false, ROOM_H, sand, "Funerary Jar")
+	exhibit("SM_Gen_Prop_Pot_01", c + Vector3(0.0, 0, 3.9), 180, 0.75, 0.45, false, ROOM_H, sand, "Storage Amphora")
+	exhibit("SM_Prop_Clay_Pot_02", c + Vector3(1.6, 0, 3.9), 180, 0.7, 0.45, false, ROOM_H, sand, "Clay Vessel")
+	exhibit("res://Assets/Synty/PolygonHeist/Prefab/Props/SM_Prop_GoldBar_02.tscn", c + Vector3(2.4, 0, 1.6), 0, 0.4, 1.0, true, ROOM_H, sand, "Temple Gold")
+	exhibit("SM_Prop_Stone_Lantern_01", c + Vector3(-4.1, 0, 4.1), 45, 1.3, 0.0, false, ROOM_H, sand, "Stone Lantern")
+	for p in [c + Vector3(-4.85, 2.0, -3.0), c + Vector3(-4.85, 2.0, 3.0), c + Vector3(4.85, 2.0, -3.0)]:
+		var tch := dress("SM_Prop_Torch_01", p, 90 if p.x < c.x else -90, 0.7)
+		tch.position.y = p.y - 0.35
+		var f := _inst(FX + "FX_Candle_Flame_01.tscn", lights, p + Vector3(0.18 if p.x < c.x else -0.18, 0.28, 0))
+		f.scale = Vector3.ONE * 0.9
+		_flick(_omni(p + Vector3(0.4 if p.x < c.x else -0.4, 0.3, 0), Color(1.0, 0.55, 0.2), 1.0, 5.0))
+	_omni(c + Vector3(0, 2.8, 0), Color(1.0, 0.75, 0.45), 0.6, 9.0)
+	var dust := _inst(FX + "FX_Dust_01.tscn", lights, c + Vector3(0, 1.5, 0))
+	dust.scale = Vector3(2, 1, 2)
+	dust.add_to_group("detail_fx")
+	webs(r, ROOM_H)
+
+func _storage_room() -> void:
+	var c := Vector3(-15, 0, -22.5)
+	# Shelving along the north and east walls; a crate island in the middle leaves narrow aisles
+	# and a hiding nook behind the shelves.
+	for x in [-3.6, -1.2, 1.2]:
+		_solid(dress("SM_Gen_Prop_Shelf_01", c + Vector3(x, 0, -4.4), 0, 2.2), "metal")
+	_solid(dress("SM_Gen_Prop_Shelf_02", c + Vector3(4.35, 0, -3.0), -90, 2.2), "metal")
+	_solid(dress("SM_Gen_Prop_Shelf_02", c + Vector3(4.35, 0, -0.6), -90, 2.2), "metal")
+	_solid(dress("SM_Gen_Prop_Crate_02", c + Vector3(-2.6, 0, -1.2), 10, 1.1), "wood")
+	_solid(dress("SM_Gen_Prop_Crate_03", c + Vector3(-1.4, 0, -1.0), -15, 1.0), "wood")
+	dress("SM_Gen_Prop_Crate_01", c + Vector3(-2.5, 1.0, -1.2), 30, 0.8)
+	_solid(dress("SM_Gen_Prop_Barrel_Metal_01", c + Vector3(0.3, 0, -1.6), 0, 1.0), "metal")
+	_solid(dress("SM_Gen_Prop_Barrel_Metal_01", c + Vector3(0.9, 0, -0.8), 50, 1.0), "metal")
+	_solid(dress("SM_Gen_Prop_Sack_Stack_01", c + Vector3(1.9, 0, -1.2), 0, 1.0), "wood")
+	_solid(dress("SM_Prop_Box_Pile_01", c + Vector3(-4.0, 0, 1.4), 90, 1.2), "wood")
+	_solid(dress("SM_Gen_Prop_Cardboard_Box_01", c + Vector3(-4.2, 0, 4.2), 15, 0.7), "wood")
+	_solid(dress("SM_Gen_Prop_Cardboard_Box_02", c + Vector3(-3.4, 0, 4.4), -25, 0.6), "wood")
+	_solid(dress("SM_Gen_Prop_Crate_02", c + Vector3(1.4, 0, 4.2), 0, 0.9), "wood")
+	dress("SM_Gen_Wep_Pickaxe_01", c + Vector3(2.3, 0.0, 4.5), 80, 1.0)
+	var pb := dress("SM_Prop_Power_Box_01", c + Vector3(-4.82, 1.1, 2.6), 90, 0.7)
+	pb.position.y = 1.1
+	dress("SM_Gen_Prop_Lever_01", c + Vector3(-4.85, 1.0, 3.4), 90, 0.4).position.y = 1.0
+	# Emergency lighting: red flicker and a weak work lamp.
+	_flick(_omni(c + Vector3(-2.0, 3.1, -3.0), Color(1.0, 0.12, 0.08), 1.2, 6.0))
+	_flick(_omni(c + Vector3(2.6, 3.1, 2.4), Color(1.0, 0.15, 0.08), 1.0, 6.0))
+	_omni(c + Vector3(0, 3.0, 2.0), Color(0.7, 0.75, 0.85), 0.35, 7.0)
+	_inst(H + "Environment/SM_Env_Ceiling_Light_01.tscn", arch, c + Vector3(0, ROOM_H, 2.0))
+	webs(Rect2(-20, -27.5, 10, 10), ROOM_H)
+
+func _security_office() -> void:
+	var c := Vector3(15, 0, -12.5)
+	_label("SECURITY  OFFICE", Vector3(15, 3.0, -17.5 + WALL_T + 0.02), 0, 40, Color(0.7, 0.85, 1.0))
+	var desk := _inst(H + "Props/SM_Prop_Desk_01.tscn", exhibits, c + Vector3(0.6, 0, -3.3), 0)
+	var dab := ExhibitFactory.bounds(desk)
+	var top_y := dab.end.y
+	for dx in [-0.45, 0.45]:
+		_inst(H + "Props/SM_Prop_Computer_Screen_01.tscn", exhibits, Vector3(dab.get_center().x + dx, top_y, dab.get_center().z - 0.15), 0)
+	_inst(H + "Props/SM_Prop_Computer_Keyboard_01.tscn", exhibits, Vector3(dab.get_center().x, top_y, dab.get_center().z + 0.2), 0)
+	_inst(H + "Props/SM_Prop_DeskLight_01.tscn", exhibits, Vector3(dab.position.x + 0.2, top_y, dab.get_center().z), 30)
+	_inst(H + "Props/SM_Prop_Seat_01.tscn", exhibits, c + Vector3(0.6, 0, -2.2), 180)
+	_inst(H + "Props/SM_Prop_Drawers_01.tscn", exhibits, c + Vector3(4.3, 0, -4.3), -90)
+	_inst(H + "Props/SM_Prop_WaterCooler_01.tscn", exhibits, c + Vector3(4.4, 0, -1.6), -90)
+	_inst(H + "Props/SM_Prop_Couch_01.tscn", exhibits, c + Vector3(4.2, 0, 2.6), -90)
+	_inst(H + "Props/SM_Prop_CoffeTable_01.tscn", exhibits, c + Vector3(2.9, 0, 2.6), -90)
+	_inst(H + "Props/SM_Prop_Plant_02.tscn", exhibits, c + Vector3(-4.3, 0, -4.3), 0)
+	_inst(H + "Props/SM_Prop_Bin_01.tscn", exhibits, c + Vector3(-0.8, 0, -4.2), 0)
+	# Monitor wall: six screens fed by the CCTV system.
+	var frame_mat := StandardMaterial3D.new()
+	frame_mat.albedo_color = Color(0.05, 0.05, 0.06)
+	for row in 2:
+		for col in 3:
+			var p := c + Vector3(-1.4 + col * 1.4, 1.55 + row * 0.85, -5 + WALL_T + 0.04)
+			_box(Vector3(1.32, 0.78, 0.06), p, frame_mat, exhibits, false)
+			var q := MeshInstance3D.new()
+			var qm := QuadMesh.new()
+			qm.size = Vector2(1.2, 0.68)
+			q.mesh = qm
+			exhibits.add_child(q)
+			q.position = p + Vector3(0, 0, 0.035)
+			q.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			monitor_screens.append(q)
+	status_board = _label("MUSEUM STATUS", c + Vector3(-5 + WALL_T + 0.03, 1.9, -1.6), 90, 30, Color(0.6, 1.0, 0.7))
+	status_board.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_omni(c + Vector3(0, 3.1, -1.0), Color(0.82, 0.9, 1.0), 1.0, 9.0)
+	_omni(c + Vector3(0.6, 1.4, -2.6), Color(0.4, 0.7, 1.0), 0.6, 3.0, "detail_light")
+	_inst(H + "Environment/SM_Env_Ceiling_Light_01.tscn", arch, c + Vector3(0, ROOM_H, -1.0))
+
+func _viking_additions() -> void:
+	exhibit("SM_Prop_Alter_01", Vector3(0, 0, -5.3), 0, 1.6, 0.0, false, HALL_H, Color(0.9, 0.7, 0.55), "Sacrificial Altar")
+	exhibit("SM_Wep_Spear_01", Vector3(-6.0, 0, -5.9), 0, 1.6, 0.8, true, HALL_H, Color(1.0, 0.86, 0.68), "Viking Spear")
+	exhibit("SM_Wep_Shield_01", Vector3(6.0, 0, -5.9), 0, 0.9, 1.0, true, HALL_H, Color(1.0, 0.86, 0.68), "Round Shield")
+	for x in [-5.0, 5.0]:
+		_solid(dress("SM_Prop_Skull_Pole_01", Vector3(x, 0, -6.9), 0, 2.0), "wood")
+
+func _occult_additions() -> void:
+	var c := Vector3(5, 0, -12.5)
+	_solid(dress("SM_Prop_Rocking_Chair_01", c + Vector3(-2.4, 0, -2.4), 120, 1.1), "wood")
+	_solid(dress("SM_Prop_Exorcist_Case_01", c + Vector3(-1.4, 0, 3.8), 0, 0.7), "wood")
+	# Ritual circle of candles around the coffin.
+	for i in 6:
+		var a := i * TAU / 6.0 + 0.3
+		var p := c + Vector3(cos(a) * 1.9, 0, 0.3 + sin(a) * 1.5)
+		dress("SM_Prop_Candle_02", p, 0, 0.25)
+		var f := _inst(FX + "FX_Candle_Flame_01.tscn", lights, p + Vector3(0, 0.24, 0))
+		f.scale = Vector3.ONE * 0.35
+	_flick(_omni(c + Vector3(0, 0.6, 0.3), Color(1.0, 0.3, 0.15), 0.9, 4.0))
+	webs(Rect2(-10, -27.5, 20, 10), ROOM_H)
+
+# ------------------------------------------------------------------ interactions & pickups
+
+func _pickup(scene: String, pos: Vector3, yaw: float, kind: String) -> void:
+	var n := _inst(scene, exhibits, pos, yaw)
+	for body in n.find_children("*", "CollisionObject3D", true, false):
+		body.collision_layer = 0
+		body.collision_mask = 0
+	var glow := _omni(pos + Vector3(0, 0.4, 0), Color(0.4, 1.0, 0.5) if kind == "health" else Color(1.0, 0.8, 0.3), 0.5, 1.6, "detail_light")
+	glow.reparent(n)
+	var label := "Take ammunition" if kind == "ammo" else "Take first-aid kit"
+	var it := Interactable.make(exhibits, pos + Vector3(0, 0.3, 0), label, func(p, _i):
+		if kind == "ammo":
+			p.weapons.add_ammo(60, 24)
+			Sfx.play(p, "mag_in", null, -2.0)
+			_hud_call("toast", ["+60 rifle  +24 handgun rounds"])
+		else:
+			p.heal(50.0)
+			Sfx.play(p, "power_up", null, -10.0, 1.6)
+			_hud_call("toast", ["+50 health"]), 1.6, "pickup")
+	it.once_per_round = true
+	it.visual = n
+	pickups.append(it)
+
+func _interactions() -> void:
+	var I := "res://Assets/Synty/PolygonHeist/Prefab/Items/"
+	_pickup(I + "SM_Item_AmmoPack_01.tscn", Vector3(-12.0, 0, -24.8), 0, "ammo")
+	_pickup(I + "SM_Item_HealthKit_01.tscn", Vector3(-15.5, 0, -20.6), 30, "health")
+	_pickup(I + "SM_Item_AmmoPack_01.tscn", Vector3(18.4, 0, -10.8), 90, "ammo")
+	_pickup(I + "SM_Item_HealthKit_01.tscn", Vector3(17.9, 0.42, -9.9), 0, "health")
+	_pickup(I + "SM_Item_AmmoPack_01.tscn", Vector3(8.2, 0, 6.6), 0, "ammo")
+	_pickup(I + "SM_Item_HealthKit_01.tscn", Vector3(-19.0, 0, 6.6), 0, "health")
+	_pickup(I + "SM_Item_AmmoPack_01.tscn", Vector3(8.6, 0, -26.4), 0, "ammo")
+	_pickup(I + "SM_Item_HealthKit_01.tscn", Vector3(-18.6, 0, -9.0), 0, "health")
+	# Reception / security desk in the hall with the museum directory.
+	_inst(H + "Props/SM_Prop_TellerDesk_01.tscn", exhibits, Vector3(6.8, 0, 6.2), 180)
+	var board_mat := StandardMaterial3D.new()
+	board_mat.albedo_color = Color(0.08, 0.08, 0.1)
+	_box(Vector3(1.6, 1.1, 0.08), Vector3(-6.8, 1.45, 6.6), board_mat, exhibits, true)
+	_box(Vector3(0.1, 0.9, 0.1), Vector3(-6.8, 0.45, 6.6), _brass_mat, exhibits, true)
+	var dir_text := "MUSEUM  DIRECTORY\n\n‹ West:  Wild West Gallery\n› East:  Future City · Security Office\n▲ North:  Samurai · Occult Exhibition\n      Ancient Civilizations · Crypt\n      Storage (staff only)"
+	var l := _label(dir_text, Vector3(-6.8, 1.45, 6.6 - 0.05), 180, 22, Color(0.92, 0.85, 0.65))
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	Interactable.make(exhibits, Vector3(-6.8, 1.0, 6.0), "Read museum directory", func(_p, _i):
+		_hud_call("show_info", ["Museum Directory", "Main Hall: Viking longship, Stone Totem, Rune Stone.\nNorth: Samurai Gallery, Occult Exhibition, the Crypt.\nNorth-west: Ancient Civilizations wing and Storage & Maintenance.\nEast: Future City and the Security Office (CCTV recordings, alarm).\nWest: Wild West Gallery.\nAmmunition and first-aid kits: Storage, Security Office, the hall desk and the Crypt."]), 1.8, "plaque")
+	# Security office terminal and alarm button.
+	var c := Vector3(15, 0, -12.5)
+	Interactable.make(exhibits, c + Vector3(0.6, 1.0, -2.8), "Use security terminal (CCTV recordings)", func(_p, _i):
+		var d := _director()
+		if d: d.open_terminal(), 1.8, "terminal")
+	var btn := _inst(H + "Props/SM_Prop_AlarmButton_01.tscn", exhibits, c + Vector3(4.9, 1.3, -0.6), -90)
+	Interactable.make(exhibits, btn.global_position, "Museum alarm (toggle)", func(_p, _i):
+		var d := _director()
+		if d: d.toggle_alarm(), 1.6, "alarm")
+	# Cursed relics: one supernatural encounter each per round.
+	relics["longship"] = Interactable.make(exhibits, Vector3(4.6, 1.0, 0.2), "Blow the longship's war horn", _relic.bind("longship"), 2.0, "relic")
+	relics["totem"] = Interactable.make(exhibits, Vector3(3.2, 1.0, -5.6), "Touch the Stone Totem", _relic.bind("totem"), 1.8, "relic")
+	relics["crystal"] = Interactable.make(exhibits, Vector3(1.8, 1.0, -10.9), "Gaze into the crystal ball", _relic.bind("crystal"), 1.6, "relic")
+	relics["tomb"] = Interactable.make(exhibits, Vector3(-14.4, 0.8, -11.4), "Break the sarcophagus seal", _relic.bind("tomb"), 2.0, "relic")
+	for k in relics:
+		relics[k].once_per_round = true
+	# Display mechanisms and suspicious objects.
+	Interactable.make(exhibits, Vector3(-5, 1.0, -11.2), "Ring the temple bell", func(p, i):
+		Sfx.play(self, "round_chime", Vector3(-5, 1.6, -12.5), 4.0, 0.45)
+		i.cooldown = 8.0
+		get_tree().call_group("enemies", "hear_noise", Vector3(-5, 0, -12.5), 40.0, false)
+		_hud_call("toast", ["The bell rings through the museum... something heard it."]), 1.8, "mechanism")
+	Interactable.make(exhibits, Vector3(1.9, 1.0, -13.5), "Wind the gramophone", func(p, i):
+		Sfx.play(self, "whisper", Vector3(1.2, 1.2, -13.5), 2.0, 0.6)
+		Sfx.play(self, "ghost_wail", Vector3(1.2, 1.2, -13.5), -8.0, 0.5)
+		i.cooldown = 10.0
+		get_tree().call_group("enemies", "hear_noise", Vector3(1.2, 0, -13.5), 18.0, false), 1.6, "mechanism")
+	Interactable.make(exhibits, Vector3(5, 1.0, -16.0), "Look into the mirror", func(p, i):
+		i.cooldown = 15.0
+		var d := _director()
+		if d and d.haunting: d.haunting.mirror_scare(Vector3(5, 1.8, -17.3)), 1.6, "suspicious")
+	var chest_it := Interactable.make(exhibits, Vector3(-3.5, 0.8, 4.3), "Open the iron-bound chest", func(p, i):
+		var roll := randf()
+		if roll < 0.5:
+			p.weapons.add_ammo(45, 12)
+			_hud_call("toast", ["Inside: a guard's spare magazines (+45 / +12)"])
+		elif roll < 0.75:
+			p.heal(35.0)
+			_hud_call("toast", ["Inside: a dusty first-aid pouch (+35 health)"])
+		else:
+			Fx.ghost_burst(self, Vector3(-3.5, 1.0, 5.0))
+			Sfx.play(self, "ghost_wail", Vector3(-3.5, 1.0, 5.0), -2.0)
+			_hud_call("toast", ["Something cold rushes out of the chest!"]), 1.6, "container")
+	chest_it.once_per_round = true
+	pickups.append(chest_it)
+
+func _relic(p: Node, it: Interactable, relic: String) -> void:
+	var d := _director()
+	if d:
+		d.on_relic(relic, it.global_position)
+
+## Called by the round manager at the start of every round.
+func reset_round() -> void:
+	for it in pickups:
+		it.reset()
+	for k in relics:
+		relics[k].reset()
+	for e in possessable:
+		if is_instance_valid(e.node):
+			e.node.visible = true
+	for c in cases:
+		if is_instance_valid(c.node):
+			c.node.visible = true
+
+func _emergency_lighting() -> void:
+	for z in zones:
+		var r: Rect2 = z.rect
+		var h := HALL_H if z.name.begins_with("Main") else ROOM_H
+		for p in [Vector3(r.position.x + 0.6, h - 0.5, r.get_center().y), Vector3(r.end.x - 0.6, h - 0.5, r.get_center().y)]:
+			var o := _omni(p, Color(1.0, 0.1, 0.05), 0.0, maxf(r.size.x, r.size.y) * 0.75)
+			o.add_to_group("emergency_light")
+			o.visible = false
+			emergency_lights.append(o)
+
+## Keeps enemies' navigation off a large exhibit (longship deck, stagecoach) without adding any
+## physical barrier for the player: a box on collision layer 4 (value 8), which only the navmesh
+## bake reads.
+func _nav_blocker(center: Vector3, size: Vector3) -> void:
+	var sb := StaticBody3D.new()
+	sb.collision_layer = 8
+	sb.collision_mask = 0
+	exhibits.add_child(sb)
+	sb.position = center
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = size
+	cs.shape = bs
+	sb.add_child(cs)
+
+func update_status(text: String) -> void:
+	if status_board:
+		status_board.text = text
+
+# ------------------------------------------------------------------ cameras
+
 func _security_cameras() -> void:
 	var player: Node3D = get_tree().get_first_node_in_group("player")
 	var cctv: Node = $CCTV
 	var cams := [
-		["CAM 01 · WILD WEST GALLERY", Vector3(-19.4, ROOM_H - 0.05, 6.9), Rect2(-20, -7.5, 10, 15)],
-		["CAM 02 · FUTURE CITY GALLERY", Vector3(19.4, ROOM_H - 0.05, -6.9), Rect2(10, -7.5, 10, 15)],
+		["CAM 01 · MAIN HALL", Vector3(-9.5, HALL_H - 0.6, 6.9), Rect2(-10, -7.5, 20, 15), true, HALL_H],
+		["CAM 02 · WILD WEST", Vector3(-19.4, ROOM_H - 0.05, 6.9), Rect2(-20, -7.5, 10, 15), true, ROOM_H],
+		["CAM 03 · FUTURE CITY", Vector3(19.4, ROOM_H - 0.05, -6.9), Rect2(10, -7.5, 10, 15), false, ROOM_H],
+		["CAM 04 · ANCIENT WING", Vector3(-10.5, ROOM_H - 0.05, -8.0), Rect2(-20, -17.5, 10, 10), true, ROOM_H],
+		["CAM 05 · OCCULT EXHIBIT", Vector3(9.5, ROOM_H - 0.05, -17.0), Rect2(0, -17.5, 10, 10), true, ROOM_H],
+		["CAM 06 · STORAGE", Vector3(-19.4, ROOM_H - 0.05, -18.0), Rect2(-20, -27.5, 10, 10), false, ROOM_H],
 	]
 	for c in cams:
 		var cam := SECURITY_CAMERA.new()
 		cam.camera_name = c[0]
 		cam.area_rect = c[2]
-		cam.area_height = ROOM_H
+		cam.recording = c[3]
+		cam.area_height = c[4]
 		cam.player = player
 		cam.cctv = cctv
 		cam.position = c[1]   # set before _ready so the area and viewpoint are built in place
 		add_child(cam)
+		cameras.append(cam)

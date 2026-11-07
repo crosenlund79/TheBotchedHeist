@@ -41,11 +41,15 @@ SELECTION = {
                        "SM_Prop_Stone_Lantern_01", "SM_Prop_Paper_Lantern_01", "SM_Prop_WarriorShoulderArmor",
                        "SM_Wep_Odachi_01", "SM_Wep_Naginata_01", "SM_Wep_Ninjato_01", "SM_Wep_Sai_01",
                        "SM_Prop_Zen_Lantern_01", "SM_Chr_Samurai_Warrior_01_Black", "SM_Chr_Ninja_01_Black",
-                       "SM_Chr_Geisha_01_White"],
+                       "SM_Chr_Geisha_01_White",
+                       # Museum Awakens expansion
+                       "SM_Prop_Gong_01", "SM_Prop_Pot_02", "SM_Prop_Pot_05"],
     "PolygonVikings": ["SM_Veh_Boat_01", "SM_Prop_Shield_Decor_01", "SM_Prop_Shield_Decor_02", "SM_Prop_Shield_Decor_03",
                        "SM_Prop_Shield_Decor_04", "SM_Env_Stone_Statue_01", "SM_Prop_Rock_Totem_01", "SM_Prop_Chest_01",
                        "SM_Prop_Anvil_01", "SM_Wep_LargeAxe_01", "SM_Wep_Horn_01", "SM_Wep_Sword_01",
-                       "SM_Chr_Chief_01_Brown", "SM_Chr_Shieldmadien_Brown"],
+                       "SM_Chr_Chief_01_Brown", "SM_Chr_Shieldmadien_Brown",
+                       # Museum Awakens expansion
+                       "SM_Prop_Alter_01", "SM_Prop_Skull_Pole_01", "SM_Wep_Spear_01", "SM_Wep_Shield_01", "SM_Wep_Shield_03", "SM_Wep_Axe_01", "SM_Prop_Clay_Pot_01", "SM_Prop_Clay_Pot_02", "SM_Prop_Fur_Roll_01", "SM_Prop_Cross_01"],
     "PolygonSciFiCity": ["SM_Veh_Hover_Bike_01", "SM_Veh_Hoverboard_01", "SM_Prop_Drone_01", "SM_Prop_Drone_Ball_01",
                          "SM_Prop_Drone_Quad_01", "SM_Prop_Hologram_Bottle_01", "SM_Prop_Robotic_Part_01",
                          "SM_Prop_VendingMachine_Soda_01", "SM_Sign_Neon_01", "SM_Sign_Neon_05", "SM_Sign_Neon_Flat_04",
@@ -62,11 +66,15 @@ SELECTION = {
                              "SM_Prop_Candle_Stand_01", "SM_Prop_Candle_Stand_02", "SM_Prop_Candle_02",
                              "SM_Prop_Cage_01", "SM_Prop_Exorcist_Cross_01", "SM_Prop_Light_Chandelier_01",
                              "SM_Prop_Specimen_Jar_01", "SM_Prop_Specimen_Jar_02", "SM_Prop_Torch_01",
-                             "SM_Prop_Urn_01", "SM_Prop_Bird_Cage_01"],
+                             "SM_Prop_Urn_01", "SM_Prop_Bird_Cage_01",
+                       # Museum Awakens expansion
+                       "SM_Prop_Ornamental_Head_01", "SM_Prop_Mask_01", "SM_Prop_Mask_02", "SM_Prop_Music_Box_01", "SM_Prop_Rocking_Chair_01", "SM_Prop_ArmChair_02", "SM_Bld_Bookshelf_01", "SM_Prop_Cabinet_01", "SM_Prop_Exorcist_Case_01", "SM_Prop_Exorcist_Bible_01", "SM_Prop_Ghost_Meter_01", "SM_Prop_Jack_In_The_Box_01", "SM_Prop_Ceramic_Vase_01", "SM_Prop_Coffin_02", "SM_Prop_Rug_03", "SM_Prop_Table_01_Cloth_01", "SM_Prop_Dresser_Mirror_01", "SM_Prop_Candle_Stand_03", "SM_Prop_Power_Box_01", "SM_Prop_Box_Pile_01", "SM_Prop_Cardboard_Box_01"],
     "PolygonGeneric": ["SM_Gen_Prop_Statue_01", "SM_Gen_Prop_Statue_02", "SM_Gen_Prop_Statue_03", "SM_Gen_Prop_Statue_04",
                        "SM_Gen_Prop_Statue_05", "SM_Gen_Chr_Skeleton_01",
                        "SM_Gen_Prop_Skull_01", "SM_Gen_Prop_Chain_01", "SM_Gen_Prop_Chain_Anchor_01",
-                       "SM_Gen_Prop_Barrel_Wood_01", "SM_Gen_Prop_Crate_01", "SM_Gen_Prop_Chest_02"],
+                       "SM_Gen_Prop_Barrel_Wood_01", "SM_Gen_Prop_Crate_01", "SM_Gen_Prop_Chest_02",
+                       # Museum Awakens expansion
+                       "SM_Gen_Prop_Crate_02", "SM_Gen_Prop_Crate_03", "SM_Gen_Prop_Barrel_Metal_01", "SM_Gen_Prop_Shelf_01", "SM_Gen_Prop_Shelf_02", "SM_Gen_Prop_Cardboard_Box_01", "SM_Gen_Prop_Cardboard_Box_02", "SM_Gen_Prop_Sack_Stack_01", "SM_Gen_Prop_Plinth_01", "SM_Gen_Prop_Plinth_02", "SM_Gen_Prop_Pot_01", "SM_Gen_Prop_Pot_03", "SM_Gen_Prop_Medkit_01", "SM_Gen_Prop_Coin_Pile_01", "SM_Gen_Wep_Pickaxe_01", "SM_Gen_Prop_Lever_01", "SM_Gen_Prop_Papers_01"],
 }
 
 DOC_RE = re.compile(r"^--- !u!(\d+) &(-?\d+)", re.M)
